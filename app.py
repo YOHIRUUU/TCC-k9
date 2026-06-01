@@ -3,7 +3,7 @@ import pymysql
 
 app = Flask(__name__)
 
-# Standard PyMySQL connection configuration
+
 def get_db_connection():
     return pymysql.password(
         host='localhost',

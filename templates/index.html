@@ -43,7 +43,7 @@
 
             <div class="mb-3">
                 <label>Matrícula:</label>
-                <input type="text" class="form-control" placeholder="Digite sua matrícula" required>
+                <input type="text" name="matricula" id="matricula" class="form-control" placeholder="Digite sua matrícula" required>
             </div>
 
             <div class="mb-3">
@@ -59,10 +59,10 @@
             <!-- BOTÕES USUÁRIO / ADMIN -->
             <div id="botao_usu_adm">
 
-                <input type="radio" class="btn-check" name="tipo" id="usuario" checked>
+                <input type="radio" class="btn-check" name="tipo" id="usuario" value="usuario" checked>
                 <label class="btn btn-secondary" for="usuario">Usuário</label>
 
-                <input type="radio" class="btn-check" name="tipo" id="admin">
+                <input type="radio" class="btn-check" name="tipo" id="admin" value="admin">
                 <label class="btn btn-secondary" for="admin">Admin</label>
 
             </div>
@@ -113,15 +113,17 @@ usuario.addEventListener("change", () => {
 
 // LOGIN (FLASK API)
 async function login() {
+    const matricula = document.getElementById("matricula").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+    const tipo = document.querySelector('input[name="tipo"]:checked').value;
 
     const response = await fetch("/api/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ matricula, email, password, tipo })
     });
 
     const data = await response.json();

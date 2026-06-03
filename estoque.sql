@@ -18,4 +18,4 @@ CREATE TABLE usuarios (
 	);
 
 INSERT INTO usuarios (email, senha, permisao) VALUES ('admin@gmail.com', 'admin123', 1)
---se foda bro
+

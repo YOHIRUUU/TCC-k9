@@ -10,7 +10,7 @@ from datetime import timedelta
 #configuração basica da WEB
 load_dotenv()
 
-app = Flask(__name__, template_folder='template')
+app = Flask(__name__, template_folder='templates')
 app.secret_key = os.getenv("SECRET_KEY", "dev-key-change-in-production")
 app.permanent_session_lifetime = timedelta(hours=24)
 

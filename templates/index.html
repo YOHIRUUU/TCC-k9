@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -19,15 +20,15 @@
             <div class="carousel-inner">
 
                 <div class="carousel-item active" data-bs-interval="3000">
-                    <img src="../static/robotista.jpg" class="d-block w-100">
+                    <img src="../static/robotista.jpg" class="d-block w-100" alt="Imagem de robótica">
                 </div>
 
                 <div class="carousel-item" data-bs-interval="3000">
-                    <img src="../static/eletronica2.jpg" class="d-block w-100">
+                    <img src="../static/eletronica2.jpg" class="d-block w-100" alt="Imagem de eletrônica">
                 </div>
 
                 <div class="carousel-item">
-                    <img src="../static/cursos-tecnicos.jpg" class="d-block w-100">
+                    <img src="../static/cursos-tecnicos.jpg" class="d-block w-100" alt="Imagem de cursos técnicos">
                 </div>
 
             </div>
@@ -39,20 +40,20 @@
 
         <form id="login-box">
 
-            <img src="../static/senai2.png" id="logo">
+            <img src="../static/senai2.png" id="logo" alt="Logo SENAI">
 
             <div class="mb-3">
-                <label>Matrícula:</label>
+                <label for="matricula">Matrícula:</label>
                 <input type="text" name="matricula" id="matricula" class="form-control" placeholder="Digite sua matrícula" required>
             </div>
 
             <div class="mb-3">
-                <label>E-mail:</label>
+                <label for="email">E-mail:</label>
                 <input type="email" name="email" id="email" class="form-control" placeholder="Digite seu E-mail" required>
             </div>
 
             <div class="mb-3">
-                <label>Senha:</label>
+                <label for="password">Senha:</label>
                 <input type="password" name="password" id="password" class="form-control" placeholder="Digite sua Senha" required>
             </div>
 
@@ -75,7 +76,7 @@
             </button>
 
             <p style="text-align: center;">
-                <br> Cadastrar Usuario?
+                <br> Cadastrar Usuário?
             </p>
 
             <!-- CADASTRO -->

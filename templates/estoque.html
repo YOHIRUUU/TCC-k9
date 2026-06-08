@@ -11,12 +11,16 @@
 
 <body>
 
-<nav id="navbar" class="navbar navbar-expand-lg navbar-custom fixed-top">
-    <img src="../static/senai2.png" id="logo">
+<!-- NAVBAR -->
+<nav id="navbar" class="navbar navbar-expand-lg fixed-top">
+
     <div class="container-fluid">
 
-
-        <a class="navbar-brand ms-2 fw-bold" href="#">Almoxarifado</a>
+        <!-- LOGO + TEXTO -->
+        <a class="navbar-brand d-flex align-items-center fw-bold" href="/">
+            <img src="../static/senai2.png" id="logo">
+            <span class="ms-2">Almoxarifado</span>
+        </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -27,19 +31,19 @@
             <ul class="navbar-nav ms-auto">
 
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Home</a>
+                    <a class="nav-link active" href="/estoque">Home</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Retirada</a>
+                    <a class="nav-link" href="/retirada">Retirada</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Histórico</a>
+                    <a class="nav-link" href="/historico">Histórico</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Sair</a>
+                    <a class="nav-link" href="/logout">Sair</a>
                 </li>
 
             </ul>
@@ -105,51 +109,80 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
-      <form method="POST" action="/adicionar">
-        <div class="modal-body">
+      <div class="modal-body">
 
-          <div class="mb-3">
-            <label>Nome</label>
-            <input type="text" class="form-control" name="nome" required>
-          </div>
-
-          <div class="mb-3">
-            <label>Categoria</label>
-            <input type="text" class="form-control" name="categoria" required>
-          </div>
-
-          <div class="mb-3">
-            <label>Quantidade</label>
-            <input type="number" class="form-control" name="quantidade" min="1" required>
-          </div>
-
-          <div class="mb-3">
-            <label>Preço (R$)</label>
-            <input type="number" class="form-control" name="preco" step="0.01" required>
-          </div>
-
-          <div class="mb-3">
-            <label>Descrição</label>
-            <textarea class="form-control" name="descricao"></textarea>
-          </div>
-
+        <div class="mb-3">
+          <label>Nome</label>
+          <input type="text" class="form-control" id="itemNome" required>
         </div>
 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Cancelar
-          </button>
-          <button type="submit" class="btn btn-success">
-            Salvar
-          </button>
+        <div class="mb-3">
+          <label>Categoria</label>
+          <input type="text" class="form-control" id="itemCategoria" required>
         </div>
-      </form>
+
+        <div class="mb-3">
+          <label>Quantidade</label>
+          <input type="number" class="form-control" id="itemQuantidade" min="1" required>
+        </div>
+
+        <div class="mb-3">
+          <label>Preço (R$)</label>
+          <input type="number" class="form-control" id="itemPreco" step="0.01" required>
+        </div>
+
+        <div class="mb-3">
+          <label>Descrição</label>
+          <textarea class="form-control" id="itemDescricao"></textarea>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-success" onclick="adicionarItem()">
+          Salvar
+        </button>
+      </div>
 
     </div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+async function adicionarItem() {
+    const nome = document.getElementById("itemNome").value;
+    const categoria = document.getElementById("itemCategoria").value;
+    const quantidade = document.getElementById("itemQuantidade").value;
+    const preco = document.getElementById("itemPreco").value;
+    const descricao = document.getElementById("itemDescricao").value;
+
+    if (!nome || !categoria || !quantidade || !preco) {
+        alert("Por favor, preencha todos os campos obrigatórios!");
+        return;
+    }
+
+    const response = await fetch("/api/item", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ nome, categoria, quantidade, preco, descricao })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+        alert("Item adicionado com sucesso!");
+        location.reload();
+    } else {
+        alert(data.error || "Erro ao adicionar item");
+    }
+}
+</script>
 
 </body>
 </html>

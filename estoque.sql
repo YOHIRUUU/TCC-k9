@@ -11,11 +11,12 @@ CREATE TABLE estoque(
 	);
 
 CREATE TABLE usuarios (
+	matricula VARCHAR(32) NOT NULL,
 	email VARCHAR(48) NOT NULL,
     senha VARCHAR(32) NOT NULL,
     permisao BOOL,
     PRIMARY KEY (`email`)
 	);
 
-INSERT INTO usuarios (email, senha, permisao) VALUES ('admin@gmail.com', 'admin123', 1)
-INSERT INTO usuarios (email, senha, permisao) VALUES ('user@gmail.com', 'user123', 0)
+INSERT INTO usuarios (matricula, email, senha, permisao) VALUES ('ademiro', 'admin@gmail.com', 'admin123', 1)
+INSERT INTO usuarios (matricula, email, senha, permisao) VALUES ('usairo', 'user@gmail.com', 'user123', 0)

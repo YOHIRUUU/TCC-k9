@@ -1,8 +1,11 @@
+@import url('https://googleapis.com');
+
 body {
     background-image: url(img/background\ for\ glass.jpg);
     background-repeat: no-repeat;
     background-size: 100%;
     background-position: center;
+    font-family: 'Google Sans', sans-serif;
 }
 
 .container {

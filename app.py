@@ -1,5 +1,6 @@
 from flask import Flask, render_template, g
 import mysql.connector 
+from mysql.connector import Error
 import os
 import logging
 

@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-----------------------
+#----------SQL------------------
 DB_HOST = 'localhost'
 DB_USER = 'seu_usuario'
 DB_PASSWORD = 'sua_senha'
@@ -27,6 +27,8 @@ def close_db(e):
     db = g.pop('db', None)
     if db is not None:
         db.close()
+
+#--------------FIM DO SQL--------------------
 
 @app.route("/")
 def home():

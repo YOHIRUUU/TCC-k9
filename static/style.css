@@ -13,7 +13,7 @@ body {
 }
 
 #carrossel {
-    width: 55%;
+    width: 80%;
     position: relative;
     overflow: hidden;
     display: block;
@@ -28,10 +28,10 @@ body {
 
 #corpo{
     position: absolute;
-    left: 54.4%;
+    left: 80%;
     top: 0%;
     width: 100%;
-    max-width: 45.5%;
+    max-width: 20%;
     padding: 2.5rem;
     background-color: #192a6b;
     min-height: 100vh;

@@ -10,35 +10,37 @@
     
 </head>
 <body>
+
     <nav id="navbar" class="navbar navbar-expand-lg navbar-custom fixed-top">
                 <li class="nav-item">
                     <a class="nav-link" href="/"><img src="../static/senai2.png" id="logo"></a>
                 </li>
         <div class="container-fluid">
-            <a class="navbar-brand ms-2 fw-bold" href="#" id="tituloEstoque">Almoxarifado</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li id="nav-item">
-                        <a class="nav-link active" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Cadastrar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/ABRAXAS">Estoque</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/adicionar">Adicionar</a>
-                    </li>
-
+                <div id="nav-tudo">
+                    <ul class="navbar-nav ms-auto">
+                        <li id="nav-item">
+                            <a class="nav-link active" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/cadastrar">Cadastrar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/ABRAXAS">Estoque</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/adicionar">Adicionar</a>
+                        </li>
+                    </div>
                 </ul>
             </div>
         </div>
     </nav>
     <div id="elemento">
+        <a id="tituloEstoque">Almoxarifado</a>
         <div id="card">
             <h3 id="titulo">Estoque</h3>
             <table class="table table-striped table-hover" id="tabela">

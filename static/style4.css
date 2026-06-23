@@ -25,7 +25,7 @@ body::before {
     top: 0;
     z-index: 999;
 
-    background: rgba(7, 47, 78, 0.85);
+    background: #192a6b;
     backdrop-filter: blur(10px);
 
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
@@ -123,4 +123,10 @@ body::before {
 
 #tituloEstoque {
     color: #ffffff;
+}
+
+#almo{
+    position: relative;
+    bottom: -9px;
+    color:  #ffffff;
 }

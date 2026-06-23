@@ -49,12 +49,12 @@ body::before {
     bottom: -5px;
     width: 0%;
     height: 2px;
-    background: #a51a1a;
+    background: #8494D1;
     transition: 0.3s;
 }
 
 #navbar .nav-link:hover {
-    color: #00d4ff;
+    color: #8494D1;
 }
 
 #navbar .nav-link:hover::after {

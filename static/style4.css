@@ -69,13 +69,12 @@ body::before {
     margin-left: 570px;
 
 }
-/* container principal */
+
 #elemento {
     max-width: 1000px;
     margin: 50px auto;
 }
 
-/* card */
 #card {
     padding: 25px;
     border-radius: 20px;

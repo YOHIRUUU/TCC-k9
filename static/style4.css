@@ -140,3 +140,7 @@ body::before {
     transition: 0.3s;
     margin: 50px auto;
 }
+
+#add_a_photo {
+    width: 40px;
+}

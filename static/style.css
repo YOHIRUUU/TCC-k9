@@ -12,24 +12,14 @@
 body { 
     background-color: #080d1a;
     background-image:
-    radial-gradient(at 0% 0%, #072f4ed9 0px, transparent 50%), 
-    radial-gradient(at 100% 100%, #111111 0px, transparent 50%);
+    radial-gradient(at 0% 0%, #101B47 0px, transparent 50%), 
+    radial-gradient(at 100% 100%, #072f4ed9 0px, transparent 50%);
     color: #ff9501;
 
     min-height: 100vh;
     overflow-x: hidden; 
 }
-/*--
-#glass-panel {
 
-}
-
-#glass-navbar {
-
-}
---*/
-
-/* --- TELA DE LOGIN & CADASTRO (LAYOUT DUPLO) --- */
 #container {
     display: flex;
     min-height: 100vh;
@@ -93,14 +83,18 @@ body {
     z-index: 10;
 }
 
+#botao_acao {
+    background-color: #111111;
+    color:#ff9501;
+    border-bottom-color: #ff9501;
+}
+
 /* --- RESPONSIVIDADE --- */
 @media (max-width: 992px) {
     #container {
         flex-direction: column;
     }
-    #carrossel {
-        display: none; /* Esconde o carrossel em telas pequenas */
-    }
+
     #corpo {
         width: 100%;
         min-height: 100vh;

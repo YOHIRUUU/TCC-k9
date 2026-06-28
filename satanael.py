@@ -33,7 +33,7 @@ def close_db(e):
 
 @app.route("/")
 def index():
-    return render_template("Index.html")
+    return render_template("index.html")
 
 @app.route("/ABRAXAS")
 def ABRAXAS():

@@ -18,15 +18,4 @@ CREATE TABLE IF NOT EXISTS estoque (
     preco decimal(9, 2) NOT NULL,
     imagem Varchar(255) NOT NULL
 );
-
-CREATE TABLE IF NOT EXISTS historico (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_email VARCHAR(100) NOT NULL,
-    item_nome VARCHAR(100) NOT NULL,
-    quantidade INT NOT NULL, -- Positivo para entrada, Negativo para saída
-    tipo VARCHAR(20) NOT NULL, -- 'Entrada' ou 'Saída'
-    data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_email) REFERENCES usuarios (email) ON DELETE CASCADE
-);
-
 INSERT INTO usuarios (email, nome, senha, permisao) 

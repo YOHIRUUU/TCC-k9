@@ -35,8 +35,8 @@ def close_db(e):
 
 #--------------ROTAS BACANAS---------------
 @app.route("/")
-def Ganesha():
-    return render_template("Ganesha.html")
+def lobao():
+    return render_template("lobao.html")
 
 @app.route("/ABRAXAS")
 def ABRAXAS():
@@ -66,8 +66,8 @@ def historico():
 
     return render_template("historico.html", registros=registros)
 
-@app.route("/adicionar", methods=["GET", "POST"])
-def adicionar():
+@app.route("/Bodhisattvas", methods=["GET", "POST"])
+def Bodhisattvas():
     if request.method == "POST":
         nome = request.form.get("Nome")
         quantidade = request.form.get("Quantidade")
@@ -88,7 +88,7 @@ def adicionar():
         db.commit()
         cursor.close()
 
-    return render_template("adicionar.html")
+    return render_template("Bodhisattvas.html")
 
 @app.route("/anubis", methods=["GET", "POST"])
 def anubis():

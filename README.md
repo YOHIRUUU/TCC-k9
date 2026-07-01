@@ -1,7 +1,9 @@
 ABRAXAS = ESTOQUE
 ----------------
 GANESHA = LOGIN
-----------------
+--------------
+BODHISATTVAS = ADICIONAR
+------------------
 ANUBIS = MOVIMENTAR
 ----------------
 BACK = ????

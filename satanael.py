@@ -1,7 +1,6 @@
 #---------IMPORTS DO BALACOBACO--------
 from flask import Flask, render_template, g
 import mysql.connector 
-import bcrypt 
 from flask import request
 
 #---------FIM DOS IMPORTS---------
@@ -35,8 +34,8 @@ def close_db(e):
 
 #--------------ROTAS BACANAS---------------
 @app.route("/")
-def lobao():
-    return render_template("lobao.html")
+def index():
+    return render_template("index.html")
 
 @app.route("/ABRAXAS")
 def ABRAXAS():
@@ -66,8 +65,8 @@ def historico():
 
     return render_template("historico.html", registros=registros)
 
-@app.route("/Bodhisattvas", methods=["GET", "POST"])
-def Bodhisattvas():
+@app.route("/adicionar", methods=["GET", "POST"])
+def adicionar():
     if request.method == "POST":
         nome = request.form.get("Nome")
         quantidade = request.form.get("Quantidade")
@@ -88,16 +87,19 @@ def Bodhisattvas():
         db.commit()
         cursor.close()
 
-    return render_template("Bodhisattvas.html")
+    return render_template("adicionar.html")
 
 @app.route("/anubis", methods=["GET", "POST"])
 def anubis():
-    return render_template("anubis.html")
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
 
-@app.route("/back", methods=["GET", "POST"])
-def back():
-    return render_template("back.html")
+    cursor.execute("SELECT * FROM estoque")
+    registros = cursor.fetchall()
 
+    cursor.close()
+
+    return render_template("anubis.html", registros=registros)
 #------------FIM DAS ROTAS BACANAS--------------
 
 if __name__ == "__main__":

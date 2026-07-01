@@ -40,13 +40,15 @@ def index():
 
 @app.route("/ABRAXAS")
 def ABRAXAS():
-    data = {
-        'host': DB_HOST,
-        'user': DB_USER,
-        'database': DB_DATABASE
-    }
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
 
-    return render_template("ABRAXAS.html", data=data)
+    cursor.execute("SELECT * FROM estoque")
+    registros = cursor.fetchall()
+
+    cursor.close()
+
+    return render_template("ABRAXAS.html", registros=registros)
 
 @app.route("/cadastrar")
 def cadastrar():

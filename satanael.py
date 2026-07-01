@@ -34,7 +34,7 @@ def close_db(e):
 
 #--------------ROTAS BACANAS---------------
 @app.route("/")
-def Ganesha():
+def ganesha():
     return render_template("Ganesha.html")
 
 @app.route("/ABRAXAS")
@@ -100,10 +100,11 @@ def anubis():
     cursor.close()
 
     return render_template("anubis.html", registros=registros)
-
+    
 @app.route("/back")
 def back():
     return render_template("back.html")
-#------------FIM DAS RTAS BACANAS--------------
+#------------FIM DAS ROTAS BACANAS--------------
+
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=3000)

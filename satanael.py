@@ -35,8 +35,8 @@ def close_db(e):
 
 #--------------ROTAS BACANAS---------------
 @app.route("/")
-def index():
-    return render_template("index.html")
+def lobao():
+    return render_template("lobao.html")
 
 @app.route("/ABRAXAS")
 def ABRAXAS():
@@ -93,6 +93,10 @@ def adicionar():
 @app.route("/anubis", methods=["GET", "POST"])
 def anubis():
     return render_template("anubis.html")
+
+@app.route("/back", methods=["GET", "POST"])
+def back():
+    return render_template("back.html")
 
 #------------FIM DAS ROTAS BACANAS--------------
 

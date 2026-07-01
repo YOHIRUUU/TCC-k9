@@ -35,8 +35,8 @@ def close_db(e):
 
 #--------------ROTAS BACANAS---------------
 @app.route("/")
-def lobao():
-    return render_template("lobao.html")
+def Ganesha():
+    return render_template("Ganesha.html")
 
 @app.route("/ABRAXAS")
 def ABRAXAS():

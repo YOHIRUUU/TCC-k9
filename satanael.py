@@ -88,6 +88,10 @@ def adicionar():
 
     return render_template("adicionar.html")
 
+@app.route("/anubis", methods=["GET", "POST"])
+def anubis():
+    return render_template("anubis.html")
+
 #------------FIM DAS ROTAS BACANAS--------------
 
 if __name__ == "__main__":

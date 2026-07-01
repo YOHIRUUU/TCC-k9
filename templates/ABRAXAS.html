@@ -58,12 +58,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in data %}
+                    {% for item in registros %}
                     <tr>
                         <td>{{ item.id }}</td>
                         <td>{{ item.nome }}</td>
-                        <td>{{ item.preco }}</td>
                         <td>{{ item.quantidade }}</td>
+                        <td>{{ item.preço }}</td>
                         <td>{{ item.categoria }}</td>
                         <td>{{ item.descricao }}</td>
                     </tr>

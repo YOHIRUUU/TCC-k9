@@ -2,6 +2,8 @@ ABRAXAS = ESTOQUE
 ----------------
 GANESHA = LOGIN
 --------------
+TIRTHANKARAS = CADASTRAR
+----------------
 BODHISATTVAS = ADICIONAR
 ------------------
 ANUBIS = MOVIMENTAR

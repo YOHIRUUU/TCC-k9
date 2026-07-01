@@ -145,3 +145,9 @@ body::before {
     width: 40px;
     margin-right: 10px;
 }
+
+#botao_foto {
+    background: #8494d144;
+    border-color: #ff9501;
+    border-radius: 80px;
+}

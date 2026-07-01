@@ -1,7 +1,13 @@
 ABRAXAS = ESTOQUE
+----------------
 GANESHA = LOGIN
+----------------
 ANUBIS = MOVIMENTAR
+----------------
 BACK = ????
+----------------
 SATANAEL = FLASK
+----------------
 THANATOS = BCRYPT
+----------------
 YALDABAOTH = SQL

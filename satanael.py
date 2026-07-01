@@ -49,9 +49,9 @@ def ABRAXAS():
 
     return render_template("ABRAXAS.html", registros=registros)
 
-@app.route("/cadastrar")
-def cadastrar():
-    return render_template("cadastrar.html")
+@app.route("/Tirthankaras")
+def Tirthankaras():
+    return render_template("Tirthankaras.html")
 
 @app.route("/historico")
 def historico():

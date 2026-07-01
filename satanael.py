@@ -102,7 +102,7 @@ def anubis():
     return render_template("anubis.html", registros=registros)
     
 @app.route("/back")
-def Tirthankaras():
+def back():
     return render_template("back.html")
 #------------FIM DAS ROTAS BACANAS--------------
 

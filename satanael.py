@@ -100,6 +100,10 @@ def anubis():
     cursor.close()
 
     return render_template("anubis.html", registros=registros)
+    
+@app.route("/back")
+def Tirthankaras():
+    return render_template("back.html")
 #------------FIM DAS ROTAS BACANAS--------------
 
 if __name__ == "__main__":

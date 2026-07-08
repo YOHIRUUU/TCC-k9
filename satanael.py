@@ -73,17 +73,18 @@ def Bodhisattvas():
         preco = request.form.get("Preco")
         categoria = request.form.get("Categoria")
         descricao = request.form.get("Descricao")
+        imagem = request.form.get("Imagem")
     
 
         db = get_db()
         cursor = db.cursor()
 
         sql = """
-        INSERT INTO estoque (nome, quantidade, preco, categoria, descricao)
-        VALUES (%s, %s, %s, %s, %s)
+        INSERT INTO estoque (nome, quantidade, preco, categoria, descricao, imagem)
+        VALUES (%s, %s, %s, %s, %s, %s)
         """
 
-        cursor.execute(sql, (nome, quantidade, preco, categoria, descricao))
+        cursor.execute(sql, (nome, quantidade, preco, categoria, descricao, imagem))
         db.commit()
         cursor.close()
 

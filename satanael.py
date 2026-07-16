@@ -94,12 +94,45 @@ def Bodhisattvas():
 def anubis():
     db = get_db()
     cursor = db.cursor(dictionary=True)
-
     cursor.execute("SELECT * FROM estoque")
     registros = cursor.fetchall()
-
     cursor.close()
-
+    if request.method == "POST":
+        opcao = request.form.get('opcao')
+        if opcao == 'add':
+            quant = request.form.get('Quantidade')
+            item = request.form.get('item_selecionado')
+            id_limpo = int(item) if item and item.isdigit() else None
+            if id_limpo and quant:
+                db = get_db()
+                cursor = db.cursor(dictionary=True)
+                query_busca_quant = "SELECT quantidade FROM estoque WHERE id = %s"
+                cursor.execute(query_busca_quant, (id_limpo,))
+                resultado_quant = cursor.fetchone()
+                if resultado_quant:
+                    quant_atual = resultado_quant['quantidade']
+                    quant3 = quant_atual + int(quant)
+                    query_update = "UPDATE estoque SET quantidade = %s WHERE id = %s"
+                    cursor.execute(query_update, (quant3, id_limpo))
+            db.commit()
+            cursor.close()
+        else:
+            quant = request.form.get('Quantidade')
+            item = request.form.get('item_selecionado')
+            id_limpo = int(item) if item and item.isdigit() else None
+            if id_limpo and quant:
+                db = get_db()
+                cursor = db.cursor(dictionary=True)
+                query_busca_quant = "SELECT quantidade FROM estoque WHERE id = %s"
+                cursor.execute(query_busca_quant, (id_limpo,))
+                resultado_quant = cursor.fetchone()
+                if resultado_quant:
+                    quant_atual = resultado_quant['quantidade']
+                    quant3 = quant_atual - int(quant)
+                    query_update = "UPDATE estoque SET quantidade = %s WHERE id = %s"
+                    cursor.execute(query_update, (quant3, id_limpo))
+        db.commit()
+        cursor.close()
     return render_template("anubis.html", registros=registros)
     
 @app.route("/back")

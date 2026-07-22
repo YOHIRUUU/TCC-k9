@@ -33,7 +33,7 @@ def close_db(e):
 #--------------FIM DO SQL--------------------
 
 #--------------ROTAS BACANAS---------------
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def ganesha():
     return render_template("Ganesha.html")
 

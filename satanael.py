@@ -2,6 +2,8 @@
 from flask import Flask, render_template, g
 import mysql.connector 
 from flask import request
+from flask import redirect
+import bcrypt
 
 #---------FIM DOS IMPORTS---------
 

@@ -74,8 +74,33 @@ def ABRAXAS():
 
     return render_template("ABRAXAS.html", registros=registros)
 
-@app.route("/Tirthankaras")
+@app.route("/Tirthankaras", methods=["GET", "POST"])
 def Tirthankaras():
+    if request.method == "POST":
+        email = request.form.get('mail')
+        user = request.form.get('user')
+        senha = request.form.get('senha')
+        opcao = request.form.get('opcao')
+        permissao = 1 if opcao else 0
+        if email and user and senha:
+            salt = bcrypt.gensalt(rounds=12)
+            senha_hash = bcrypt.hashpw(senha.encode('utf-8'), salt)
+            senha_hash_str = senha_hash.decode('utf-8')
+            db = get_db()
+            cursor = db.cursor()
+            try:
+                sql = """
+                INSERT INTO usuarios (email, nome, senha, permisao)
+                VALUES (%s, %s, %s, %s)
+                """
+                cursor.execute(sql, (email, user, senha_hash_str, permissao))
+                db.commit()
+                return redirect("/ABRAXAS", code=302)
+            except Exception as e:
+                db.rollback()
+                print(f"Erro ao inserir no banco de dados: {e}")
+            finally:
+                cursor.close()
     return render_template("Tirthankaras.html")
 
 @app.route("/historico")

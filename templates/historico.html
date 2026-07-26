@@ -45,31 +45,46 @@
             </div>
         </div>
     </nav>
-    <div id="elemento">
-        <div id="card">
-            <h3 id="titulo">Histórico de Movimentações</h3>
-            <table class="table table-striped table-hover" id="tabela">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Quantidade</th>
-                        <th>Categoria</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in registros %}
-                    <tr>
-                        <td>{{ item.id }}</td>
-                        <td>{{ item.nome }}</td>
-                        <td>{{ item.quantidade }}</td>
-                        <td>{{ item.categoria }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+<div id="elemento">
+    <div id="card">
+        <h3 id="titulo">Histórico de Movimentações Recentes</h3>
+        <table class="table table-striped table-hover" id="tabela">
+            <thead>
+                <tr>
+                    <th>ID Log</th>
+                    <th>Ação</th>
+                    <th>Produto</th>
+                    <th>Antes</th>
+                    <th>Depois</th>
+                    <th>Data e Hora</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in registros %}
+                <tr>
+                    <td>{{ item.id_log }}</td>
+                    <td>
+                        <span class="badge 
+                            {% if 'Entrada' in item.acao or 'Novo' in item.acao %} bg-success 
+                            {% elif 'Saída' in item.acao %} bg-danger 
+                            {% else %} bg-secondary {% endif %}">
+                            {{ item.acao }}
+                        </span>
+                    </td>
+                    <td>{{ item.produto_nome }}</td>
+                    <td>{{ item.qtd_anterior }} un.</td>
+                    <td>{{ item.qtd_nova }} un.</td>
+                    <td>{{ item.data_hora }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">Nenhuma movimentação registrada ainda.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+</div>
 </body>
 
 </html>

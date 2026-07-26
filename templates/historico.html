@@ -23,6 +23,7 @@
             </button>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
+                    {% if session.get('permisao') == 1 %}
                     <li class="nav-item">
                         <a class="nav-link" href="/Tirthankaras">Cadastrar</a>
                     </li>
@@ -32,6 +33,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/anubis">Movimentação</a>
                     </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="/ABRAXAS">Estoque</a>
                     </li>

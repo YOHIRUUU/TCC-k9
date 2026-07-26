@@ -109,12 +109,10 @@ def Tirthankaras():
 def historico():
     db = get_db()
     cursor = db.cursor(dictionary=True)
-
-    cursor.execute("SELECT * FROM estoque")
+    query = "SELECT * FROM historico_estoque ORDER BY data_hora DESC LIMIT 15"
+    cursor.execute(query)
     registros = cursor.fetchall()
-
     cursor.close()
-
     return render_template("historico.html", registros=registros)
 
 @app.route("/Bodhisattvas", methods=["GET", "POST"])

@@ -33,8 +33,33 @@ def close_db(e):
 #--------------FIM DO SQL--------------------
 
 #--------------ROTAS BACANAS---------------
-@app.route("/", methods=["GET", "POST"])
 def ganesha():
+    if request.method == "POST":
+        mail = request.form.get("mail")
+        user = request.form.get("user")
+        senha = request.form.get("senha")
+        if user and mail and senha:
+            db = get_db()
+            cursor = db.cursor(dictionary=True)
+            try:
+                buscar_senha = "SELECT senha FROM usuarios WHERE email = %s AND `nome` = %s"
+                cursor.execute(buscar_senha, (mail, user))
+                usuario = cursor.fetchone()
+                if usuario:
+                    hash_banco = usuario["senha"]
+                    if isinstance(hash_banco, bytes):
+                        hash_str = hash_banco.decode("utf-8")
+                    else:
+                        hash_str = hash_banco
+                        hash_banco = hash_banco.encode("utf-8")
+                    partes = hash_str.split("$")
+                    if len(partes) >= 3 and partes[2] == "12":
+                        if bcrypt.checkpw(senha.encode("utf-8"), hash_banco):
+                            return redirect("/ABRAXAS", code=302)
+                    else:
+                        print("O hash informado não possui o fator de custo 12.")
+            finally:
+                cursor.close()
     return render_template("Ganesha.html")
 
 @app.route("/ABRAXAS")

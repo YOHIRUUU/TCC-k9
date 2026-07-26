@@ -16,5 +16,5 @@ THANATOS = BCRYPT
 ----------------
 YALDABAOTH = SQL
 ----------------
-padmasambhava = gerador de senha
+PADMASAMBHAVA = GERADOR DE SENHA
 ----------------

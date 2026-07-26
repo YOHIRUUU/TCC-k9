@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Old+Turkic&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../static/style.css">
-    <link rel="stylesheet" href="../app.py">
     <link rel="icon" type="image/png" href="static/senai.png">
 </head>
 
@@ -32,7 +31,7 @@
                 </div>
             </div>
             <div id="corpo">
-                <form id="login-box" action="/ABRAXAS" method="GET">
+                <form id="login-box" method="POST">
                     <img src="../static/senai2.png" id="logo">
                     <br>
                     <br>
@@ -50,10 +49,9 @@
                         <input type="password" name="senha" class="form-control" placeholder="Digite sua Senha" required>
                     </div>
                     <br>
-                    <button onclick="href='/ABRAXAS'" type="submit" class="btn btn-primary w-100 mb-2" id="botao_acao">
+                    <button type="submit" class="btn btn-primary w-100 mb-2" id="botao_acao">
                         Entrar
                     </button>
-
                 </form>
             </div>
         </div>

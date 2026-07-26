@@ -16,3 +16,5 @@ THANATOS = BCRYPT
 ----------------
 YALDABAOTH = SQL
 ----------------
+padmasambhava = gerador de senha
+----------------

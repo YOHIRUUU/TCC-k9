@@ -1,13 +1,12 @@
 #---------IMPORTS DO BALACOBACO--------
-from flask import Flask, render_template, g
+from flask import Flask, render_template, g, request, redirect, session
 import mysql.connector 
-from flask import request
-from flask import redirect
 import bcrypt
 
 #---------FIM DOS IMPORTS---------
 
 app = Flask(__name__)
+app.secret_key = "7ae8e5ccbd9e2e5310a579f7ef1c9fc4911ffda504244469c197eb45ca8785ef5afd5e821b189d430877d7f0c2011047"
 
 #----------SQL------------------
 DB_HOST = 'localhost'
@@ -44,7 +43,7 @@ def ganesha():
             db = get_db()
             cursor = db.cursor(dictionary=True)
             try:
-                buscar_senha = "SELECT senha FROM usuarios WHERE email = %s AND `nome` = %s"
+                buscar_senha = "SELECT senha, permisao FROM usuarios WHERE email = %s AND `nome` = %s"
                 cursor.execute(buscar_senha, (mail, user))
                 usuario = cursor.fetchone()
                 if usuario:
@@ -57,6 +56,10 @@ def ganesha():
                     partes = hash_str.split("$")
                     if len(partes) >= 3 and partes[2] == "12":
                         if bcrypt.checkpw(senha.encode("utf-8"), hash_banco):
+                            session['logado'] = True
+                            session['email'] = mail
+                            session['nome'] = user
+                            session['permisao'] = usuario['permisao']
                             return redirect("/ABRAXAS", code=302)
                     else:
                         print("O hash informado não possui o fator de custo 12.")
@@ -66,18 +69,21 @@ def ganesha():
 
 @app.route("/ABRAXAS")
 def ABRAXAS():
+    if 'logado' not in session:
+        return redirect("/")
     db = get_db()
     cursor = db.cursor(dictionary=True)
-
     cursor.execute("SELECT * FROM estoque")
     registros = cursor.fetchall()
-
     cursor.close()
-
     return render_template("ABRAXAS.html", registros=registros)
 
 @app.route("/Tirthankaras", methods=["GET", "POST"])
 def Tirthankaras():
+    if 'logado' not in session:
+        return redirect("/")
+    if session.get('permisao') == 0:
+        return redirect("/ABRAXAS")
     if request.method == "POST":
         email = request.form.get('mail')
         user = request.form.get('user')
@@ -107,6 +113,8 @@ def Tirthankaras():
 
 @app.route("/historico")
 def historico():
+    if 'logado' not in session:
+        return redirect("/")
     db = get_db()
     cursor = db.cursor(dictionary=True)
     query = "SELECT * FROM historico_estoque ORDER BY data_hora DESC LIMIT 15"
@@ -117,6 +125,10 @@ def historico():
 
 @app.route("/Bodhisattvas", methods=["GET", "POST"])
 def Bodhisattvas():
+    if 'logado' not in session:
+        return redirect("/")
+    if session.get('permisao') == 0:
+        return redirect("/ABRAXAS")
     if request.method == "POST":
         nome = request.form.get("Nome")
         quantidade = request.form.get("Quantidade")
@@ -124,24 +136,23 @@ def Bodhisattvas():
         categoria = request.form.get("Categoria")
         descricao = request.form.get("Descricao")
         imagem = request.form.get("Imagem")
-    
-
         db = get_db()
         cursor = db.cursor()
-
         sql = """
         INSERT INTO estoque (nome, quantidade, preco, categoria, descricao, imagem)
         VALUES (%s, %s, %s, %s, %s, %s)
         """
-
         cursor.execute(sql, (nome, quantidade, preco, categoria, descricao, imagem))
         db.commit()
         cursor.close()
-
     return render_template("Bodhisattvas.html")
 
 @app.route("/anubis", methods=["GET", "POST"])
 def anubis():
+    if 'logado' not in session:
+        return redirect("/")
+    if session.get('permisao') == 0:
+        return redirect("/ABRAXAS")
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("SELECT * FROM estoque")

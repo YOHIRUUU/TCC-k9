@@ -34,6 +34,7 @@ def close_db(e):
 #--------------FIM DO SQL--------------------
 
 #--------------ROTAS BACANAS---------------
+@app.route("/")
 def ganesha():
     if request.method == "POST":
         mail = request.form.get("mail")

@@ -68,7 +68,7 @@ def ganesha():
                 cursor.close()
     return render_template("Ganesha.html")
 
-@app.route("/ABRAXAS")
+@app.route("/ABRAXAS", methods=["GET", "POST"])
 def ABRAXAS():
     if 'logado' not in session:
         return redirect("/")

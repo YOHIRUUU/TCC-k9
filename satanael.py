@@ -196,7 +196,20 @@ def anubis():
         db.commit()
         cursor.close()
     return render_template("anubis.html", registros=registros)
-    
+
+@app.route("/anu", methods=["GET", "POST"])
+def anu():
+    if request.method == "POST":
+        item = request.form.get('item_selecionado')
+        if item:
+            db = get_db()
+            cursor = db.cursor
+            sql = "DELETE FROM ESTOQUE WHERE id = %s"
+            cursor.execute(sql, (item))
+            db.commit()
+            cursor.close()
+    return render_template("anu.html")
+
 @app.route("/back")
 def back():
     return render_template("back.html")

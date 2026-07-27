@@ -46,9 +46,9 @@ BEGIN
     DECLARE tipo_acao VARCHAR(50);
     
     IF NEW.quantidade > OLD.quantidade THEN
-        SET tipo_acao = 'Entrada (Adição)';
+        SET tipo_acao = 'Adição';
     ELSEIF NEW.quantidade < OLD.quantidade THEN
-        SET tipo_acao = 'Saída (Subtração)';
+        SET tipo_acao = 'Subtração';
     ELSE
         SET tipo_acao = 'Edição de Dados';
     END IF;

@@ -57,3 +57,13 @@ BEGIN
     VALUES (tipo_acao, NEW.nome, OLD.quantidade, NEW.quantidade);
 END; //
 DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER log_delete_estoque
+AFTER DELETE ON estoque
+FOR EACH ROW
+BEGIN
+    INSERT INTO historico_estoque (acao, produto_nome, qtd_anterior, qtd_nova)
+    VALUES ('Item Deletado', OLD.nome, OLD.quantidade, 0);
+END; //
+DELIMITER ;

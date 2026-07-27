@@ -70,9 +70,10 @@
                     <td>{{ item.id_log }}</td>
                     <td>
                         <span class="badge 
-                            {% if 'Entrada' in item.acao or 'Novo' in item.acao %} bg-success 
-                            {% elif 'Saída' in item.acao %} bg-danger 
-                            {% else %} bg-secondary {% endif %}">
+                            {% if 'Entrada' in item.acao %} bg-success 
+                            {% elif 'Novo' in item.acao %} bg-primary 
+                            {% elif 'Saída' in item.acao %} bg-warning
+                            {% elif 'Deletado' in item.acao %} bg-danger {% else %} bg-secondary {% endif %}">
                             {{ item.acao }}
                         </span>
                     </td>

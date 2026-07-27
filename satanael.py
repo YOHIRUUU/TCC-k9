@@ -199,16 +199,25 @@ def anubis():
 
 @app.route("/anu", methods=["GET", "POST"])
 def anu():
+    if 'logado' not in session:
+        return redirect("/")
+    if session.get('permisao') == 0:
+        return redirect("/ABRAXAS")
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM estoque")
+    registros = cursor.fetchall()
+    cursor.close()
     if request.method == "POST":
         item = request.form.get('item_selecionado')
         if item:
             db = get_db()
-            cursor = db.cursor
-            sql = "DELETE FROM ESTOQUE WHERE id = %s"
-            cursor.execute(sql, (item))
+            cursor = db.cursor(dictionary=True)
+            sql = "DELETE FROM estoque WHERE id = %s"
+            cursor.execute(sql, (item,))
             db.commit()
             cursor.close()
-    return render_template("anu.html")
+    return render_template("anu.html", registros=registros)
 
 @app.route("/back")
 def back():

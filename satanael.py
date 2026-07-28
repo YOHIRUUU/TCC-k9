@@ -219,6 +219,11 @@ def anu():
             cursor.close()
     return render_template("anu.html", registros=registros)
 
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
+
 @app.route("/back")
 def back():
     return render_template("back.html")

@@ -50,7 +50,7 @@ BEGIN
     ELSEIF NEW.quantidade < OLD.quantidade THEN
         SET tipo_acao = 'Subtração';
     ELSE
-        SET tipo_acao = 'Edição de Dados';
+        SET tipo_acao = 'Null';
     END IF;
 
     INSERT INTO historico_estoque (acao, produto_nome, qtd_anterior, qtd_nova)

@@ -45,7 +45,9 @@
                         <a class="nav-link" href="/historico">Historico</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/"><img src="../static/account_circle.png" id="logo"></a>
+                        <a class="nav-link" href="/logout" title="Sair do Sistema">
+                            <img src="../static/account_circle.png" id="logo" alt="Logout">
+                        </a>
                     </li>
                 </ul>
                 <li class="nav-item">
@@ -81,7 +83,7 @@
                                 <td>{{ item.preco }}</td>
                                 <td>{{ item.categoria }}</td>
                                 <td>{{ item.descricao }}</td>
-                                <td>
+                                <td id="botaofoto">
                                     <button class="btn btn-info" onclick="mostrar_foto('{{ item.imagem }}')">
                                         Foto
                                     </button>

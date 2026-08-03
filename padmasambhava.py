@@ -1,3 +1,4 @@
+#esse arquivo é tão inutil que ele só existe por existir e não dá pra deletar
 import bcrypt
 from typing import Tuple
 from datetime import datetime

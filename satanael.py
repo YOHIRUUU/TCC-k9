@@ -1,4 +1,4 @@
-#---------IMPORTS DO BALACOBACO--------
+#---------IMPORTS DO BALACOBACO?--------
 from flask import Flask, render_template, g, request, redirect, session
 import mysql.connector 
 import bcrypt
@@ -123,7 +123,7 @@ def historico():
     registros = cursor.fetchall()
     cursor.close()
     return render_template("historico.html", registros=registros)
-
+#---------alguém me mata pfvrzinho?------------
 @app.route("/Bodhisattvas", methods=["GET", "POST"])
 def Bodhisattvas():
     if 'logado' not in session:

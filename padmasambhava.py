@@ -9,3 +9,4 @@ def senhahash(password:str, rounds=12):
     return pwd
 
 senhahash("exemplo")
+#-------pq isso existe?--------

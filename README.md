@@ -12,9 +12,8 @@ ANUBIS = MOVIMENTAR
 ----------------
 SATANAEL = FLASK
 ----------------
-THANATOS = BCRYPT
-----------------
 YALDABAOTH = SQL
 ----------------
 PADMASAMBHAVA = GERADOR DE SENHA
 ----------------
+ANU = DELETA COISAS

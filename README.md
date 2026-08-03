@@ -17,3 +17,4 @@ YALDABAOTH = SQL
 PADMASAMBHAVA = GERADOR DE SENHA
 ----------------
 ANU = DELETA COISAS
+-----------------

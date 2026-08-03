@@ -10,8 +10,6 @@ BODHISATTVAS = ADICIONAR
 ------------------
 ANUBIS = MOVIMENTAR
 ----------------
-BACK = ????
-----------------
 SATANAEL = FLASK
 ----------------
 THANATOS = BCRYPT

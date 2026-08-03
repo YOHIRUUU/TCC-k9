@@ -60,11 +60,12 @@ body::before {
 #navbar .nav-link:hover {
     color: #8494D1;
 }
-/*serve para os botões que mudam de cor*/
+/*serve para fazer os botões mudar de cor*/
 #navbar .nav-link:hover::after {
     width: 100%;
 }
 
+/*serve para estilizar o item de um menu de navegação que está selecionado ou ativo no momento*/
 #navbar .nav-link.active {
     color: #ffffff;
 }

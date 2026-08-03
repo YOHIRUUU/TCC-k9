@@ -4,6 +4,7 @@
     --font: 'Outfit', times;
 }
 
+/* remove as margens e preenchimentos padrão que cada navegador coloca nos elementos*/
 * {
     margin: 0;
     padding: 0;

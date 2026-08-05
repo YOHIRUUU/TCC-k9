@@ -34,8 +34,9 @@ def close_db(e):
 #--------------FIM DO SQL--------------------
 
 #--------------ROTAS BACANAS---------------
+#--------------antigo ganesha---------------
 @app.route("/", methods=["GET", "POST"])
-def ganesha():
+def logar():
     if request.method == "POST":
         mail = request.form.get("mail")
         user = request.form.get("user")
@@ -66,8 +67,9 @@ def ganesha():
                         print("O hash informado não possui o fator de custo 12.")
             finally:
                 cursor.close()
-    return render_template("Ganesha.html")
+    return render_template("logar.html")
 
+#--------------o mesmo ABRAXAS---------------
 @app.route("/ABRAXAS", methods=["GET", "POST"])
 def ABRAXAS():
     if 'logado' not in session:
@@ -79,8 +81,9 @@ def ABRAXAS():
     cursor.close()
     return render_template("ABRAXAS.html", registros=registros)
 
-@app.route("/Tirthankaras", methods=["GET", "POST"])
-def Tirthankaras():
+#--------------o antigo Tithankaras---------------
+@app.route("/cadastrar", methods=["GET", "POST"])
+def cadastrar():
     if 'logado' not in session:
         return redirect("/")
     if session.get('permisao') == 0:
@@ -110,8 +113,9 @@ def Tirthankaras():
                 print(f"Erro ao inserir no banco de dados: {e}")
             finally:
                 cursor.close()
-    return render_template("Tirthankaras.html")
+    return render_template("cadastrar.html")
 
+#--------------O mesmo historico---------------
 @app.route("/historico")
 def historico():
     if 'logado' not in session:
@@ -123,9 +127,10 @@ def historico():
     registros = cursor.fetchall()
     cursor.close()
     return render_template("historico.html", registros=registros)
-#---------alguém me mata pfvrzinho?------------
-@app.route("/Bodhisattvas", methods=["GET", "POST"])
-def Bodhisattvas():
+
+#---------antigo Bodhisattvas------------
+@app.route("/adicionar", methods=["GET", "POST"])
+def adicionar():
     if 'logado' not in session:
         return redirect("/")
     if session.get('permisao') == 0:
@@ -146,14 +151,13 @@ def Bodhisattvas():
         cursor.execute(sql, (nome, quantidade, preco, categoria, descricao, imagem))
         db.commit()
         cursor.close()
-    return render_template("Bodhisattvas.html")
+    return render_template("adicionar.html")
 
-@app.route("/anubis", methods=["GET", "POST"])
-def anubis():
+#--------------o antigo anubis---------------
+@app.route("/movimentação", methods=["GET", "POST"])
+def movimento():
     if 'logado' not in session:
         return redirect("/")
-    if session.get('permisao') == 0:
-        return redirect("/ABRAXAS")
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("SELECT * FROM estoque")
@@ -195,10 +199,11 @@ def anubis():
                     cursor.execute(query_update, (quant3, id_limpo))
         db.commit()
         cursor.close()
-    return render_template("anubis.html", registros=registros)
+    return render_template("movimento.html", registros=registros)
 
-@app.route("/anu", methods=["GET", "POST"])
-def anu():
+#--------------o antigo anu---------------
+@app.route("/remover", methods=["GET", "POST"])
+def remover():
     if 'logado' not in session:
         return redirect("/")
     if session.get('permisao') == 0:
@@ -217,7 +222,7 @@ def anu():
             cursor.execute(sql, (item,))
             db.commit()
             cursor.close()
-    return render_template("anu.html", registros=registros)
+    return render_template("remover.html", registros=registros)
 
 @app.route("/logout")
 def logout():

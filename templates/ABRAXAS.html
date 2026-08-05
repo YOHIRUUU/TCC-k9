@@ -29,16 +29,18 @@
                 <ul class="navbar-nav ms-auto">
                     {% if session.get('permisao') == 1 %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/Tirthankaras">Cadastrar</a>
+                        <a class="nav-link" href="/cadastrar">Cadastrar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Bodhisattvas">Adicionar</a>
+                        <a class="nav-link" href="/adicionar">Adicionar</a>
                     </li>
+                    {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/anubis">Movimentação</a>
+                        <a class="nav-link" href="/movimentação">Movimentação</a>
                     </li>
+                    {% if session.get('permisao') == 1 %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/anu">Remover</a>
+                        <a class="nav-link" href="/remover">Remover</a>
                     </li>
                     {% endif %}
                     <li class="nav-item">

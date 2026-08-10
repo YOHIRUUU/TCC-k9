@@ -224,6 +224,19 @@ def remover():
             cursor.close()
     return render_template("remover.html", registros=registros)
 
+@app.route("/usuarios")
+def users():
+    if 'logado' not in session:
+        return redirect("/")
+    if session.get('permisao') == 0:
+        return redirect("/ABRAXAS")
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM usuarios")
+    registros = cursor.fetchall()
+    cursor.close()
+    return render_template("users.html", registros=registros)
+
 @app.route("/logout")
 def logout():
     session.clear()

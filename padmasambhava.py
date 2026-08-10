@@ -1,4 +1,3 @@
-#esse arquivo é tão inutil que ele só existe por existir e não dá pra deletar
 import bcrypt
 from typing import Tuple
 from datetime import datetime
@@ -10,3 +9,4 @@ def senhahash(password:str, rounds=12):
 
 senhahash("exemplo")
 #-------pq isso existe?--------
+#-------pra gerar a senha pro primeiro usuário pra conseguir inserir no sql--------

@@ -1,211 +1,103 @@
-body {
-    background-image: url("instituto_senai_de_tecnologia_mt_cover.png");
-    background-size: cover;
-    background-position: top;
-    background-repeat: no-repeat;
-    font-family: Tahoma, Verdana, Segoe, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+:root {
+    --font: 'Outfit', times;
 }
-/*um subiten do body*/
-body::before {
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body { 
+    background-color: #080d1a;
+    background-image:
+    radial-gradient(at 0% 0%, #101B47 0px, transparent 50%), 
+    radial-gradient(at 100% 100%, #072f4ed9 0px, transparent 50%);
+    color: #ff9501;
+
+    min-height: 100vh;
+    overflow-x: hidden; 
+}
+
+#container {
+    display: flex;
+    min-height: 100vh;
+    width: 100vw;
+}
+
+#carrossel {
+    width: 55%;
+    position: relative;
+    overflow: hidden;
+    display: block;
+}
+
+#carrossel img {
+    height: 100vh;
+    width: 100%;
+    object-fit: cover;
+    filter: brightness(0.65) contrast(1.1);
+}
+
+#carrossel::after {
     content: "";
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: -1;
+    background: linear-gradient(to right, #090d1600 60%, #080d1a 100%);
+    pointer-events: none;
 }
 
-#navbar {
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    background: #072f4e1a;
-    backdrop-filter: blur(10px);
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
-    padding-left: 80px;
-    transition: 0.3s;
+#corpo {
+    width: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2.5rem;
+    z-index: 10;
 }
 
-#navbar-title {
-    font-weight: bold;
-    font-size: 10px;
-    color: white;
-}
-
-/*uma clasificação de um detalhe na navbar*/
-#navbar .nav-link {
-    margin-left: 2px;
-    color: rgb(243, 243, 243);
-    font-weight: 500;
-    position: relative;
-    transition: 0.3s;
-}
-
-/*uma clasificação de um detalhe com subclase depois na navbar*/
-/*serve para os botões que mudam de cor*/
-#navbar .nav-link::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -5px;
-    width: 0%;
-    height: 2px;
-    background: #8494D1;
-    transition: 0.3s;
-}
-
-/*serve para os botões que mudam de cor*/
-#navbar .nav-link:hover {
-    color: #8494D1;
-}
-/*serve para fazer os botões mudar de cor*/
-#navbar .nav-link:hover::after {
+#login-box {
     width: 100%;
+    max-width: 420px;
+    padding: 2.5rem;
+    transition: var(--transition-smooth);
+    animation: fadeInUp 0.6s ease;
 }
 
-/*serve para estilizar o item de um menu de navegação que está selecionado ou ativo no momento*/
-#navbar .nav-link.active {
-    color: #ffffff;
-}
-
-#nav-tudo {
-    margin-left: 570px;
-}
-
-#elemento {
+#logo {
+    display: block;
+    margin: 0 auto 1.5rem;
     max-width: 1000px;
-    margin: 50px auto;
-
+    height: 100px;
+    filter: drop-shadow(0 0 8px #000000);
 }
 
-#card {
-    padding: 25px;
-    border-radius: 20px;
-    background: rgb(255, 255, 255);
-    box-shadow: 0px 20px 60px #000000;
-    transition: 0.3s;
-}
-
-/*serve para aumentar o tamanho da tabela quando passa o mouse*/
-#card:hover {
-    transform: scale(1.01);
-}
-
-#tabela {
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-#tabela th {
-    background: linear-gradient(90deg, #101B47, #35437A, #101B47);
-    color: #ffffff;
-    border-color: black;
-    text-align: center;
-}
-
-#tabela td {
-    text-align: center;
-    vertical-align: middle;
-    transform: scale(1.01);
-}
-
-#tabela tr {
-    transition: 0.2s;
-    transform: scale(1.01);
-}
-
-#tabela tr:hover {
-    background-color: #153cca;
-    transform: scale(1.01);
-}
-#tituloEstoque{
-    color: #ff9501;
-    font-weight: bold;
-    text-align: center;
-}
-
-#titulo {
-    color: #35437A;
-    font-weight: bold;
-    text-align: center;
-}
-
-#Adicionar-item{
-    width: 80%;
-    padding: 25px;
-    border-radius: 20px;
-    background: white;
-    box-shadow: 0px 20px 60px #000000;
-    transition: 0.3s;
-    margin: 50px auto;
-}
-
-#add_a_photo {
-    width: 40px;
-    margin-right: 10px;
-}
-
-#botao_foto {
-    background: #8494d144;
-    border-color: #ff9501;
-    border-radius: 80px;
-}
-
-#flex{
-    max-width: 100%;
-    min-height: 1000px;
+#botao_usu_adm {
     display: flex;
-    flex-direction: column;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
+    z-index: 10;
 }
 
-#subflex{
-    display: flex;
-    width: 700px;
-    padding: 5px;
-    align-content: center;
+#botao_acao {
+    background-color: #111111;
+    color:#ff9501;
+    border-bottom-color: #ff9501;
 }
 
-#cardfx{
-    height: 350px;
-    width: 100%;
-    color: white;
-    padding: 25px;
-    border-radius: 20px;
-    background: #072f4e;
-    box-shadow: 0px 20px 60px #000000;
-    transition: 0.3s;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 992px) {
+    #container {
+        flex-direction: column;
+    }
 
-#cardfx:hover {
-    transform: scale(1.01);
-}
-
-#botaev{
-    padding: 0%;
-    border-radius: 5px;
-    border-color: #ff9501;
-    border-style: solid;
-    background-color: #072f4e;
-    color: #ff9501;
-}
-
-#divesquerda{
-    padding: 15px;
-}
-
-#fotouser{
-    height: 280px;
-    width: auto;
-}
-
-#imagemmenu{
-    height: 34px;
-    width: 34px;
+    #corpo {
+        width: 100%;
+        min-height: 100vh;
+        padding: 1.5rem;
+    }
 }

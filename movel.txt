@@ -1,80 +1,44 @@
-import React, { useState, useRef } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  Animated,
-  Platform,
-} from 'react-native';
+import React, { useState } from "react";
+import { View, Image, StyleSheet, Text, TextInput, TouchableOpacity, Alert,} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
-export default function App() {
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-
-  const posX = useRef(new Animated.Value(0)).current;
-  const posY = useRef(new Animated.Value(0)).current;
-  const fadeConteudo = useRef(new Animated.Value(1)).current;
-
-  function fugirBotao() {
-    const novoX = Math.random() * 100 - 50;
-    const novoY = Math.random() * 100 - 50;
-
-    Animated.parallel([
-      Animated.timing(posX, {
-        toValue: novoX,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-      Animated.timing(posY, {
-        toValue: novoY,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }
+export default function LoginScreen() {
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
 
   function handleSubmit() {
-    if (nome === '' || email === '' || senha === '') {
-      Alert.alert('Aviso', 'Preencha todos os campos.');
+    if (nome === "" || email === "" || senha === "") {
+      Alert.alert("Aviso", "Preencha todos os campos.");
       return;
     }
 
     Alert.alert(
-      'Sucesso',
+      "Sucesso",
       `Olá ${nome}, login foi efetuado!`
     );
   }
 
   return (
-    <View style={styles.background}>
+    <View style={styles.container}>
 
-      {/* GRADIENTE NO EXPO WEB */}
-      {Platform.OS === 'web' && (
-        <View
-          style={styles.gradientWeb}
-        />
-      )}
+      {/* IMAGEM + GRADIENTE */}
+      <View style={styles.imagemContainer}>
 
-      {/* FUNDO PARA CELULAR */}
-      {Platform.OS !== 'web' && (
-        <View
-          style={styles.gradientMobile}
+        <Image
+          source={require("./assets/robotista.jpg")}
+          style={styles.imagem}
         />
-      )}
+
+        <LinearGradient
+          colors={["transparent", "#07152b"]}
+          style={styles.gradiente}
+        />
+
+      </View>
 
       {/* CONTEÚDO */}
-      <Animated.View
-        style={[
-          styles.overlay,
-          {
-            opacity: fadeConteudo,
-          },
-        ]}
-      >
+      <View style={styles.conteudo}>
 
         <View style={styles.containerInputs}>
 
@@ -99,6 +63,7 @@ export default function App() {
             placeholder="Digite seu E-mail"
             placeholderTextColor="#999"
             keyboardType="email-address"
+            autoCapitalize="none"
             value={email}
             onChangeText={setEmail}
           />
@@ -119,28 +84,16 @@ export default function App() {
         </View>
 
         {/* BOTÃO */}
-        <Animated.View
-          style={{
-            width: '100%',
-            transform: [
-              { translateX: posX },
-              { translateY: posY },
-            ],
-          }}
+        <TouchableOpacity
+          style={styles.botao}
+          onPress={handleSubmit}
         >
+          <Text style={styles.textoBotao}>
+            Entrar
+          </Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.botao}
-            onPress={handleSubmit}
-          >
-            <Text style={styles.textoBotao}>
-              Entrar
-            </Text>
-          </TouchableOpacity>
-
-        </Animated.View>
-
-      </Animated.View>
+      </View>
 
     </View>
   );
@@ -148,95 +101,76 @@ export default function App() {
 
 const styles = StyleSheet.create({
 
-  background: {
+  container: {
     flex: 1,
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#07152b',
+    backgroundColor: "#07152b",
   },
 
-  gradientWeb: {
-    position: 'absolute',
-    top: 0,
+  /* IMAGEM DO CÓDIGO 1 */
+  imagemContainer: {
+    height: 350,
+    position: "relative",
+  },
+
+  imagem: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+
+  /* GRADIENTE DO CÓDIGO 1 */
+  gradiente: {
+    position: "absolute",
     left: 0,
     right: 0,
     bottom: 0,
-
-    backgroundImage:
-      'linear-gradient(135deg, #07152b 0%, #123c69 50%, #d9822b 100%)',
+    height: 400,
   },
 
-  gradientMobile: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: '#123c69',
-  },
-
-  overlay: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-
-    backgroundColor: 'rgba(7, 21, 43, 0.55)',
-
+  conteudo: {
+    flex: 1,
     paddingHorizontal: 30,
-
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   containerInputs: {
-    width: '100%',
+    width: "100%",
     marginBottom: 20,
   },
 
   label: {
-    color: '#d9822b',
+    color: "#d9822b",
     fontSize: 14,
     marginBottom: 5,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
 
   input: {
-    backgroundColor: '#ffffff',
-
-    width: '100%',
-
+    backgroundColor: "#ffffff",
+    width: "100%",
     paddingVertical: 10,
     paddingHorizontal: 15,
-
     borderRadius: 5,
-
     marginBottom: 20,
-
-    color: '#333333',
+    color: "#333333",
     fontSize: 15,
   },
 
   botao: {
-    backgroundColor: 'transparent',
-
+    backgroundColor: "transparent",
     borderWidth: 1,
-    borderColor: '#d9822b',
-
+    borderColor: "#d9822b",
     padding: 12,
-
     borderRadius: 5,
-
-    alignItems: 'center',
-    justifyContent: 'center',
-
-    width: '100%',
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
   },
 
   textoBotao: {
-    color: '#d9822b',
-
-    fontWeight: 'bold',
-
+    color: "#d9822b",
+    fontWeight: "bold",
     fontSize: 16,
   },
 

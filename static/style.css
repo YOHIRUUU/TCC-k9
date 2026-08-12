@@ -1,23 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
 :root {
     --font: 'Outfit', times;
 }
 
+/* remove as margens e preenchimentos padrão que cada navegador coloca nos elementos*/
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body { 
+body {
     background-color: #080d1a;
     background-image:
-    radial-gradient(at 0% 0%, #101B47 0px, transparent 50%), 
-    radial-gradient(at 100% 100%, #072f4ed9 0px, transparent 50%);
+        radial-gradient(at 0% 0%, #101B47 0px, transparent 50%),
+        radial-gradient(at 100% 100%, #072f4ed9 0px, transparent 50%);
     color: #ff9501;
 
     min-height: 100vh;
-    overflow-x: hidden; 
+    overflow-x: hidden;
 }
 
 #container {
@@ -85,8 +87,15 @@ body {
 
 #botao_acao {
     background-color: #111111;
-    color:#ff9501;
+    color: #ff9501;
     border-bottom-color: #ff9501;
+}
+
+#backrooms {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
 }
 
 /* --- RESPONSIVIDADE --- */
@@ -101,3 +110,4 @@ body {
         padding: 1.5rem;
     }
 }
+/* --- AOOOO LINDEZA --- */

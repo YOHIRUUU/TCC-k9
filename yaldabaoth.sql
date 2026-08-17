@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     nome VARCHAR(100) NOT NULL,
     senha VARCHAR(255) NOT NULL,
     permisao INT DEFAULT 0,
+    validade INT DEFAULT 1,
     PRIMARY KEY (email)
 );
 
@@ -25,7 +26,8 @@ CREATE TABLE historico_estoque (
     produto_nome VARCHAR(100) NOT NULL,
     qtd_anterior INT DEFAULT 0,
     qtd_nova INT DEFAULT 0,
-    data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    email varchar(255)
 );
 
 DELIMITER //

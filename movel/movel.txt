@@ -1,0 +1,177 @@
+import React, { useState } from "react";
+import { View, Image, StyleSheet, Text, TextInput, TouchableOpacity, Alert,} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+
+export default function LoginScreen() {
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+
+  function handleSubmit() {
+    if (nome === "" || email === "" || senha === "") {
+      Alert.alert("Aviso", "Preencha todos os campos.");
+      return;
+    }
+
+    Alert.alert(
+      "Sucesso",
+      `Olá ${nome}, login foi efetuado!`
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+
+      {/* IMAGEM + GRADIENTE */}
+      <View style={styles.imagemContainer}>
+
+        <Image
+          source={require("./assets/robotista.jpg")}
+          style={styles.imagem}
+        />
+
+        <LinearGradient
+          colors={["transparent", "#07152b"]}
+          style={styles.gradiente}
+        />
+
+      </View>
+
+      {/* CONTEÚDO */}
+      <View style={styles.conteudo}>
+
+        <View style={styles.containerInputs}>
+
+          <Text style={styles.label}>
+            Usuário:
+          </Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Digite seu Nome"
+            placeholderTextColor="#999"
+            value={nome}
+            onChangeText={setNome}
+          />
+
+          <Text style={styles.label}>
+            E-mail:
+          </Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Digite seu E-mail"
+            placeholderTextColor="#999"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
+          />
+
+          <Text style={styles.label}>
+            Senha:
+          </Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Digite sua Senha"
+            placeholderTextColor="#999"
+            secureTextEntry={true}
+            value={senha}
+            onChangeText={setSenha}
+          />
+
+        </View>
+
+        {/* BOTÃO */}
+        <TouchableOpacity
+          style={styles.botao}
+          onPress={handleSubmit}
+        >
+          <Text style={styles.textoBotao}>
+            Entrar
+          </Text>
+        </TouchableOpacity>
+
+      </View>
+
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+
+  container: {
+    flex: 1,
+    backgroundColor: "#07152b",
+  },
+
+  /* IMAGEM DO CÓDIGO 1 */
+  imagemContainer: {
+    height: 350,
+    position: "relative",
+  },
+
+  imagem: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+
+  /* GRADIENTE DO CÓDIGO 1 */
+  gradiente: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 400,
+  },
+
+  conteudo: {
+    flex: 1,
+    paddingHorizontal: 30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  containerInputs: {
+    width: "100%",
+    marginBottom: 20,
+  },
+
+  label: {
+    color: "#d9822b",
+    fontSize: 14,
+    marginBottom: 5,
+    alignSelf: "flex-start",
+  },
+
+  input: {
+    backgroundColor: "#ffffff",
+    width: "100%",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    marginBottom: 20,
+    color: "#333333",
+    fontSize: 15,
+  },
+
+  botao: {
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderColor: "#d9822b",
+    padding: 12,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+  },
+
+  textoBotao: {
+    color: "#d9822b",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+
+});

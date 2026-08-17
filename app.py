@@ -136,6 +136,7 @@ def adicionar():
     if session.get('permisao') == 0:
         return redirect("/ABRAXAS")
     if request.method == "POST":
+        email = session.get('email')
         nome = request.form.get("Nome")
         quantidade = request.form.get("Quantidade")
         preco = request.form.get("Preco")
@@ -149,6 +150,14 @@ def adicionar():
         VALUES (%s, %s, %s, %s, %s, %s)
         """
         cursor.execute(sql, (nome, quantidade, preco, categoria, descricao, imagem))
+        query_historico = """
+        UPDATE historico_estoque
+        SET email = %s
+        WHERE (email IS NULL OR email = '')
+        ORDER BY id_log DESC
+        LIMIT 1;
+        """
+        cursor.execute(query_historico, (email,))
         db.commit()
         cursor.close()
     return render_template("adicionar.html")
@@ -160,45 +169,35 @@ def movimento():
         return redirect("/")
     db = get_db()
     cursor = db.cursor(dictionary=True)
+    if request.method == "POST":
+        opcao = request.form.get('opcao')
+        quant = request.form.get('Quantidade')
+        item = request.form.get('item_selecionado')
+        email = session.get('email')
+        id_limpo = int(item) if item and item.isdigit() else None
+        quant_limpa = int(quant) if quant and quant.isdigit() else 0
+        if id_limpo and quant_limpa > 0:
+            cursor.execute("SELECT quantidade FROM estoque WHERE id = %s", (id_limpo,))
+            resultado_quant = cursor.fetchone()
+            if resultado_quant:
+                quant_atual = resultado_quant['quantidade']
+                if opcao == 'add':
+                    nova_quant = quant_atual + quant_limpa
+                else:
+                    nova_quant = quant_atual - quant_limpa
+                cursor.execute("UPDATE estoque SET quantidade = %s WHERE id = %s", (nova_quant, id_limpo))
+                query_historico = """
+                UPDATE historico_estoque
+                SET email = %s
+                WHERE (email IS NULL OR email = '')
+                ORDER BY id_log DESC
+                LIMIT 1;
+                """
+                cursor.execute(query_historico, (email,))
+                db.commit()
     cursor.execute("SELECT * FROM estoque")
     registros = cursor.fetchall()
     cursor.close()
-    if request.method == "POST":
-        opcao = request.form.get('opcao')
-        if opcao == 'add':
-            quant = request.form.get('Quantidade')
-            item = request.form.get('item_selecionado')
-            id_limpo = int(item) if item and item.isdigit() else None
-            if id_limpo and quant:
-                db = get_db()
-                cursor = db.cursor(dictionary=True)
-                query_busca_quant = "SELECT quantidade FROM estoque WHERE id = %s"
-                cursor.execute(query_busca_quant, (id_limpo,))
-                resultado_quant = cursor.fetchone()
-                if resultado_quant:
-                    quant_atual = resultado_quant['quantidade']
-                    quant3 = quant_atual + int(quant)
-                    query_update = "UPDATE estoque SET quantidade = %s WHERE id = %s"
-                    cursor.execute(query_update, (quant3, id_limpo))
-            db.commit()
-            cursor.close()
-        else:
-            quant = request.form.get('Quantidade')
-            item = request.form.get('item_selecionado')
-            id_limpo = int(item) if item and item.isdigit() else None
-            if id_limpo and quant:
-                db = get_db()
-                cursor = db.cursor(dictionary=True)
-                query_busca_quant = "SELECT quantidade FROM estoque WHERE id = %s"
-                cursor.execute(query_busca_quant, (id_limpo,))
-                resultado_quant = cursor.fetchone()
-                if resultado_quant:
-                    quant_atual = resultado_quant['quantidade']
-                    quant3 = quant_atual - int(quant)
-                    query_update = "UPDATE estoque SET quantidade = %s WHERE id = %s"
-                    cursor.execute(query_update, (quant3, id_limpo))
-        db.commit()
-        cursor.close()
     return render_template("movimento.html", registros=registros)
 
 #--------------o antigo anu---------------
@@ -208,6 +207,7 @@ def remover():
         return redirect("/")
     if session.get('permisao') == 0:
         return redirect("/ABRAXAS")
+    email = session.get('email')
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("SELECT * FROM estoque")
@@ -220,6 +220,14 @@ def remover():
             cursor = db.cursor(dictionary=True)
             sql = "DELETE FROM estoque WHERE id = %s"
             cursor.execute(sql, (item,))
+            query_historico = """
+            UPDATE historico_estoque
+            SET email = %s
+            WHERE (email IS NULL OR email = '')
+            ORDER BY id_log DESC
+            LIMIT 1;
+            """
+            cursor.execute(query_historico, (email,))
             db.commit()
             cursor.close()
     return render_template("remover.html", registros=registros)
@@ -236,6 +244,19 @@ def users():
     registros = cursor.fetchall()
     cursor.close()
     return render_template("users.html", registros=registros)
+
+@app.route("/perfil")
+def perfil():
+    if 'logado' not in session:
+        return redirect("/")
+    email = session.get('email')
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    siquel = "SELECT * FROM historico_estoque WHERE email = %s"
+    cursor.execute(siquel, (email,))
+    registros = cursor.fetchall()
+    cursor.close()
+    return render_template("perfil.html", registros=registros)
 
 @app.route("/logout")
 def logout():

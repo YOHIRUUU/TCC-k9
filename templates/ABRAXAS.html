@@ -29,9 +29,6 @@
                 <ul class="navbar-nav ms-auto">
                     {% if session.get('permisao') == 1 %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Cadastrar</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="/adicionar">Adicionar</a>
                     </li>
                     {% endif %}
@@ -46,11 +43,34 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/historico">Historico</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout" title="Sair do Sistema">
-                            <img src="../static/account_circle.png" id="logo" alt="Logout">
-                        </a>
-                    </li>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                            <img src="../static/usuarios.png" id="imagemmenu">
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-lg-end">
+                            <a href="/perfil">
+                                <li><button class="dropdown-item" type="button">Perfil</button></li>
+                            </a>
+                            <a href="/usuarios">
+                            <li><button class="dropdown-item" type="button">Usuários</button></li>
+                            </a>
+                            <a href="/remover">
+                            <li><button class="dropdown-item" type="button">Banir</button></li>
+                            </a>
+                            <a href="movimentação">
+                            <li><button class="dropdown-item" type="button">Desbanir</button></li>
+                            </a>
+                            <li class="nav-item">
+                                <div id="caxa">
+                                    <button type="button" class="btn btn-danger" id="botstao">
+                                        <a class="nav-link" href="/logout" title="Sair do Sistema">
+                                            <img src="../static/account_circle.png" id="logo" alt="Logout">
+                                        </a>
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </ul>
                 <li class="nav-item">
                     <a class="nav-link" href="/back">.</a>

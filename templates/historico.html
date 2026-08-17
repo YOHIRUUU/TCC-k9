@@ -66,6 +66,7 @@
                     <th>Antes</th>
                     <th>Depois</th>
                     <th>Data e Hora</th>
+                    <th>Usuário</th>
                 </tr>
             </thead>
             <tbody>
@@ -85,6 +86,7 @@
                     <td>{{ item.qtd_anterior }} un.</td>
                     <td>{{ item.qtd_nova }} un.</td>
                     <td>{{ item.data_hora }}</td>
+                    <td>{{ item.email }}</td>
                 </tr>
                 {% else %}
                 <tr>

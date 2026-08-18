@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuários</title>
+    <title>usuarios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
@@ -12,6 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="../static/style4.css">
     <link rel="icon" type="image/png" href="static/senai.png">
+</head>
 </head>
 <body>
     <nav id="navbar" class="navbar navbar-expand-lg navbar-custom fixed-top">
@@ -74,46 +76,33 @@
             </div>
         </div>
     </nav>
-<div id="elemento">
-    <div id="card">
-        <h3 id="titulo">Suas Movimentações</h3>
-        <table class="table table-striped table-hover" id="tabela">
-            <thead>
-                <tr>
-                    <th>ID Log</th>
-                    <th>Ação</th>
-                    <th>Produto</th>
-                    <th>Antes</th>
-                    <th>Depois</th>
-                    <th>Data e Hora</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in registros %}
-                <tr>
-                    <td>{{ item.id_log }}</td>
-                    <td>
-                        <span class="badge 
-                            {% if 'Entrada' in item.acao %} bg-success 
-                            {% elif 'Novo' in item.acao %} bg-primary 
-                            {% elif 'Saída' in item.acao %} bg-warning
-                            {% elif 'Deletado' in item.acao %} bg-danger {% else %} bg-secondary {% endif %}">
-                            {{ item.acao }}
-                        </span>
-                    </td>
-                    <td>{{ item.produto_nome }}</td>
-                    <td>{{ item.qtd_anterior }} un.</td>
-                    <td>{{ item.qtd_nova }} un.</td>
-                    <td>{{ item.data_hora }}</td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="6" class="text-center">Nenhuma movimentação registrada ainda.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div id="flex">
+            {% for item in registros %}
+        <div id="subflex">
+            <div id="cardfx">
+                <div id="divesquerda">
+                    <img src="../static/userimagem.png" id="fotouser" alt="foto do user">
+                </div>
+                <div id="divdireita">
+                    <div id="divdircima">
+                        <h4 id="elelel">{{ item.nome }}</h4><br><br>
+                        <p>{{ item.email }}</p>
+                        {% if item.permisao == 1 %}
+                        <p>administrador</p>
+                        {% endif %}
+                        {% if item.permisao == 0 %}
+                        <p>usuário</p>
+                        {% endif %}
+                        <br><br><br><br>
+                    </div>
+                    <div id="divdirbaixo">
+                        <button id="botaev">Histórico de ações</button>
+                        <button id="botaev">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+            {% endfor %}
     </div>
-</div>
 </body>
 </html>

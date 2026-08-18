@@ -154,7 +154,6 @@ body::before {
 }
 
 #flex{
-    border: 8px solid #ffffff;
     max-width: 100%;
     min-height: 1000px;
     display: flex;
@@ -165,14 +164,12 @@ body::before {
 
 #subflex{
     display: flex;
-    width: 700px;
-    border: 8px solid #ffb4b4;
+    width: 580px;
     padding: 5px;
     align-content: center;
 }
 
 #cardfx{
-        border: 8px solid #88ff55;
     height: 350px;
     width: 100%;
     color: white;
@@ -206,4 +203,23 @@ body::before {
 #fotouser{
     height: 280px;
     width: auto;
+}
+
+#imagemmenu{
+    height: 34px;
+    width: 34px;
+}
+
+#caxa{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#botstao{
+    width: 120px;
+}
+
+#elelel{
+    color: white;
 }

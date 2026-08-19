@@ -7,6 +7,6 @@ def senhahash(password:str, rounds=12):
     print(pwd)
     return pwd
 
-senhahash("exemplo")
+senhahash("adm")
 #-------pq isso existe?--------
 #-------pra gerar a senha pro primeiro usuário pra conseguir inserir no sql--------

@@ -70,4 +70,4 @@ BEGIN
 END; //
 DELIMITER ;
 
-INSERT INTO usuarios (email, nome, senha, permisao) VALUES ("adm@adm", "adm", "", 1);
+INSERT INTO usuarios (email, nome, senha, permisao) VALUES ("adm@adm", "adm", "$2b$12$.tLzF/ISU.kt9yIzmP149uvFwrsUW2KSa9FNt9UzYiFRcFGl0ofMy", 1);

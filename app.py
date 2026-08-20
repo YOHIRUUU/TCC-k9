@@ -45,7 +45,7 @@ def logar():
             db = get_db()
             cursor = db.cursor(dictionary=True)
             try:
-                buscar_senha = "SELECT senha, permisao FROM usuarios WHERE email = %s AND `nome` = %s"
+                buscar_senha = "SELECT senha, permisao, validade FROM usuarios WHERE email = %s AND `nome` = %s"
                 cursor.execute(buscar_senha, (mail, user))
                 usuario = cursor.fetchone()
                 if usuario:
@@ -62,6 +62,7 @@ def logar():
                             session['email'] = mail
                             session['nome'] = user
                             session['permisao'] = usuario['permisao']
+                            session['validade'] = usuario['validade']
                             return redirect("/ABRAXAS", code=302)
                     else:
                         print("O hash informado não possui o fator de custo 12.")
@@ -74,6 +75,8 @@ def logar():
 def ABRAXAS():
     if 'logado' not in session:
         return redirect("/")
+    if session.get('validade') == 0:
+        return redirect("/banido")
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("SELECT * FROM estoque")
@@ -88,6 +91,8 @@ def cadastrar():
         return redirect("/")
     if session.get('permisao') == 0:
         return redirect("/ABRAXAS")
+    if session.get('validade') == 0:
+        return redirect("/banido")
     if request.method == "POST":
         email = request.form.get('mail')
         user = request.form.get('user')
@@ -120,6 +125,8 @@ def cadastrar():
 def historico():
     if 'logado' not in session:
         return redirect("/")
+    if session.get('validade') == 0:
+        return redirect("/banido")
     db = get_db()
     cursor = db.cursor(dictionary=True)
     query = "SELECT * FROM historico_estoque ORDER BY data_hora DESC LIMIT 15"
@@ -135,6 +142,8 @@ def adicionar():
         return redirect("/")
     if session.get('permisao') == 0:
         return redirect("/ABRAXAS")
+    if session.get('validade') == 0:
+        return redirect("/banido")
     if request.method == "POST":
         email = session.get('email')
         nome = request.form.get("Nome")
@@ -167,6 +176,8 @@ def adicionar():
 def movimento():
     if 'logado' not in session:
         return redirect("/")
+    if session.get('validade') == 0:
+        return redirect("/banido")
     db = get_db()
     cursor = db.cursor(dictionary=True)
     if request.method == "POST":
@@ -207,6 +218,8 @@ def remover():
         return redirect("/")
     if session.get('permisao') == 0:
         return redirect("/ABRAXAS")
+    if session.get('validade') == 0:
+        return redirect("/banido")
     email = session.get('email')
     db = get_db()
     cursor = db.cursor(dictionary=True)
@@ -238,6 +251,8 @@ def users():
         return redirect("/")
     if session.get('permisao') == 0:
         return redirect("/ABRAXAS")
+    if session.get('validade') == 0:
+        return redirect("/banido")
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("SELECT * FROM usuarios")
@@ -249,19 +264,89 @@ def users():
 def perfil():
     if 'logado' not in session:
         return redirect("/")
+    if session.get('validade') == 0:
+        return redirect("/banido")
     email = session.get('email')
     db = get_db()
     cursor = db.cursor(dictionary=True)
     siquel = "SELECT * FROM historico_estoque WHERE email = %s"
     cursor.execute(siquel, (email,))
     registros = cursor.fetchall()
+    sequel = "SELECT * FROM usuarios WHERE email = %s"
+    cursor.execute(sequel, (email,))
+    registro = cursor.fetchall()
     cursor.close()
-    return render_template("perfil.html", registros=registros)
+    return render_template("perfil.html", registros=registros, registro=registro)
 
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
+
+@app.route("/delete")
+def delete():
+    email = session.get('email')
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    siquel = "DELETE FROM usuarios WHERE email = %s"
+    cursor.execute(siquel, (email,))
+    db.commit()
+    cursor.close()
+    session.clear()
+    return redirect("/")
+
+@app.route("/banir", methods=["GET", "POST"])
+def banir():
+    if 'logado' not in session:
+        return redirect("/")
+    if session.get('permisao') == 0:
+        return redirect("/perfil")
+    if session.get('validade') == 0:
+        return redirect("/banido")
+    emeil = session.get('email')
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    siquel = "SELECT * FROM usuarios WHERE email <> %s AND validade = 1"
+    cursor.execute(siquel, (emeil,))
+    registros = cursor.fetchall()
+    if request.method == "POST":
+        email = request.form.get('email_selecionado')
+        if email:
+            db = get_db()
+            cursor = db.cursor(dictionary=True)
+            sql = "UPDATE usuarios SET validade = 0 WHERE email = %s"
+            cursor.execute(sql, (email,))
+            db.commit()
+            cursor.close()
+    return render_template("banir.html", registros = registros)
+
+@app.route("/desbanir", methods=["GET", "POST"])
+def desbanir():
+    if 'logado' not in session:
+        return redirect("/")
+    if session.get('permisao') == 0:
+        return redirect("/perfil")
+    if session.get('validade') == 0:
+        return redirect("/banido")
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    siquel = "SELECT * FROM usuarios WHERE validade = 0"
+    cursor.execute(siquel,)
+    registros = cursor.fetchall()
+    if request.method == "POST":
+        email = request.form.get('email_selecionado')
+        if email:
+            db = get_db()
+            cursor = db.cursor(dictionary=True)
+            sql = "UPDATE usuarios SET validade = 1 WHERE email = %s"
+            cursor.execute(sql, (email,))
+            db.commit()
+            cursor.close()
+    return render_template("desbanir.html", registros = registros)
+
+@app.route("/banido")
+def banido():
+    return render_template("banido.html")
 
 @app.route("/back")
 def back():

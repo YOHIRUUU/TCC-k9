@@ -25,21 +25,20 @@
             </button>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
-                   <li class="nav-item">
-                        <a class="nav-link" href="/perfil">Perfil</a>
-                    </li>
+                    {% if session.get('permisao') == 1 %}
                     <li class="nav-item">
                         <a class="nav-link" href="/cadastrar">Cadastrar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Banir</a>
+                        <a class="nav-link" href="/banir">Banir</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Desbanir</a>
+                        <a class="nav-link" href="/desbanir">Desbanir</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Remover</a>
+                        <a class="nav-link" href="/usuarios">Usuários</a>
                     </li>
+                    {% endif %}
                     <div class="btn-group">
                         <button type="button" id="dropdown" class="btn btn-outline-warning dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                             <img src="../static/usericon.png" id="imagemmenu">
@@ -48,12 +47,14 @@
                             <a href="/ABRAXAS">
                                 <li><button class="dropdown-item" type="button">Estoque</button></li>
                             </a>
+                            {% if session.get('permisao') == 1 %}
                             <a href="/adicionar">
                             <li><button class="dropdown-item" type="button">Adicionar</button></li>
                             </a>
                             <a href="/remover">
                             <li><button class="dropdown-item" type="button">Remover</button></li>
                             </a>
+                            {% endif %}
                             <a href="movimentação">
                             <li><button class="dropdown-item" type="button">Movimentar</button></li>
                             </a>

@@ -51,23 +51,32 @@
                             <a href="/perfil">
                                 <li><button class="dropdown-item" type="button">Perfil</button></li>
                             </a>
+                            {% if session.get('permisao') == 1 %}
                             <a href="/usuarios">
                             <li><button class="dropdown-item" type="button">Usuários</button></li>
                             </a>
-                            <a href="/remover">
+                            <a href="/banir">
                             <li><button class="dropdown-item" type="button">Banir</button></li>
                             </a>
-                            <a href="movimentação">
+                            <a href="/desbanir">
                             <li><button class="dropdown-item" type="button">Desbanir</button></li>
                             </a>
                             <a href="/cadastrar">
                             <li><button class="dropdown-item" type="button">Cadastrar</button></li>
                             </a>
+                            {% endif %}
                             <li class="nav-item">
                                 <div id="caxa">
                                     <button type="button" class="btn btn-danger" id="botstao">
                                         <a class="nav-link" href="/logout" title="Sair do Sistema">
                                             <img src="../static/account_circle.png" id="logo" alt="Logout">
+                                        </a>
+                                    </button>
+                                </div>
+                                <div id="caxa">
+                                    <button type="button" class="btn btn-danger" id="botstao">
+                                        <a class="nav-link" href="/deletar" title="Sair do Sistema">
+                                            <p id="textao">Deletar conta</p>
                                         </a>
                                     </button>
                                 </div>

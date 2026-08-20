@@ -31,19 +31,19 @@
                         <a class="nav-link" href="/cadastrar">Cadastrar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Banir</a>
+                        <a class="nav-link" href="/banir">Banir</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Desbanir</a>
+                        <a class="nav-link" href="/desbanir">Desbanir</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Remover</a>
+                        <a class="nav-link" href="/perfil">Perfil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Logout</a>
+                        <a class="nav-link" href="/logout">Logout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Deletar conta</a>
+                        <a class="nav-link" href="/delete">Deletar conta</a>
                     </li>
                     <div class="btn-group">
                         <button type="button" id="dropdown" class="btn btn-outline-warning dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
@@ -88,10 +88,9 @@
                         {% if item.permisao == 0 %}
                         <p>usuário</p>
                         {% endif %}
-                    </div><br><br>
-                    <div id="divdirbaixo">
-                        <button id="botaev">Histórico de ações</button>
-                        <button id="botaev">Editar</button>
+                        {% if item.validade == 1 %}
+                        <p>BANIDO</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>

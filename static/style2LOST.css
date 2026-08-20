@@ -1,0 +1,35 @@
+@keyframes cores1 {
+    0%, 100% {background-color: red;}
+    25%      {background-color: greenyellow;}
+    50%      {background-color: blue;}
+    75%      {background-color: yellow;}
+}
+
+@keyframes cores2 {
+    0%, 100% {color: yellow;}
+    25%      {color: red;}
+    50%      {color: greenyellow;}
+    75%      {color: blue;}
+}
+
+html, body{
+    height: 99%;
+    padding: 0;
+}
+
+#banido{
+    height: 100%;
+    width: 100%;
+    border-radius: 20px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: cores1 10s infinite;
+}
+
+p{
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1000%;
+    animation: cores2 2.5s infinite;
+}

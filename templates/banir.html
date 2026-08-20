@@ -30,24 +30,20 @@
                         <a class="nav-link" href="/cadastrar">Cadastrar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Banir</a>
+                        <a class="nav-link" href="/desbanir">Desbanir</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Desbanir</a>
+                        <a class="nav-link" href="/perfil">Perfil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Remover</a>
+                        <a class="nav-link" href="/usuarios">Usuários</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Logout</a>
+                        <a class="nav-link" href="/logout">Logout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Deletar conta</a>
+                        <a class="nav-link" href="/delete">Deletar conta</a>
                     </li>
-                    <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-                        <img src="../static/usericon.png" id="imagemmenu">
-                    </button>
                     <div class="btn-group">
                         <button type="button" id="dropdown" class="btn btn-outline-warning dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                             <img src="../static/usericon.png" id="imagemmenu">
@@ -70,7 +66,6 @@
                             </a>
                         </ul>
                     </div>
-                    </div>
                 </ul>
             </div>
         </div>
@@ -78,18 +73,18 @@
     <div class="caixa-fade">
         <div id="elemento">
             <div id="Adicionar-item">
-                <h3 id="titulo">Remover</h3>
+                <h3 id="titulo">Banir</h3>
                 <br>
-                <form class="row g-3" action="/remover" method="POST" enctype="multipart/form-data">
-                    <select class="form-select" name="item_selecionado" aria-label="Default select example">
+                <form class="row g-3" action="/banir" method="POST" enctype="multipart/form-data">
+                    <select class="form-select" name="email_selecionado" aria-label="Default select example">
                         <option value="" selected disabled>Escolha o Item</option>  
                         {% for item in registros %}
-                            <option value="{{ item.id }}">{{ item.user }}</option>
+                            <option value="{{ item.email }}">{{ item.email }}</option>
                         {% endfor %}
                     </select>
                     <div class="col-12" id="Regiscao">
-                        <button type="submit" class="btn btn-primary">
-                            Deletar
+                        <button type="submit" class="btn btn-danger">
+                            Banir
                         </button>
                     </div>
             </div>

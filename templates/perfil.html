@@ -40,16 +40,8 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/cadastrar">Remover</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Deletar conta</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">
-                            <img src="../static/account_circle.png">
-                        </a>
-                    </li>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                        <button type="button" id="dropdown" class="btn btn-outline-warning dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                             <img src="../static/usericon.png" id="imagemmenu">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-lg-end">
@@ -74,6 +66,39 @@
             </div>
         </div>
     </nav>
+<div id="flex">
+    <div id="subflex2">
+        <div id="cardfx">
+            <div id="divesquerda">
+                <img src="../static/userimagem.png" id="fotouser" alt="foto do user">
+            </div>
+            <div id="divdireita">
+                <div id="divdircima">
+                    {% for item in registro %}
+                    <h2>{{ item.nome }}</h2><br><br><br><br>
+                    <p>{{ item.email }}</p>
+                    {% if item.permisao == 1 %}
+                    <p>administrador</p>
+                    {% endif %}
+                    {% if item.permisao == 0 %}
+                    <p>usuário</p>
+                    {% endif %}
+                    {% endfor %}
+                </div><br>
+                <div id="divdirbaixo">
+                    <div id="divdirbaixo">
+                        <button id="botaev2">
+                        <a class="nav-link" href="/logout">
+                            <img src="../static/account_circle.png">
+                        </a>
+                        </button>
+                        <button id="botaev2">Deletar Conta</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="elemento">
     <div id="card">
         <h3 id="titulo">Suas Movimentações</h3>

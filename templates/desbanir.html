@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>usuarios</title>
+    <title>Remover Item</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="../static/style4.css">
     <link rel="icon" type="image/png" href="static/senai.png">
+
 </head>
-</head>
+
 <body>
     <nav id="navbar" class="navbar navbar-expand-lg navbar-custom fixed-top">
         <li class="nav-item">
@@ -46,6 +45,10 @@
                         <a class="nav-link" href="/cadastrar">Deletar conta</a>
                     </li>
                     <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                        <img src="../static/usericon.png" id="imagemmenu">
+                    </button>
+                    <div class="btn-group">
                         <button type="button" id="dropdown" class="btn btn-outline-warning dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                             <img src="../static/usericon.png" id="imagemmenu">
                         </button>
@@ -67,36 +70,32 @@
                             </a>
                         </ul>
                     </div>
+                    </div>
                 </ul>
             </div>
         </div>
     </nav>
-    <div id="flex">
-            {% for item in registros %}
-        <div id="subflex">
-            <div id="cardfx">
-                <div id="divesquerda">
-                    <img src="../static/userimagem.png" id="fotouser" alt="foto do user">
-                </div>
-                <div id="divdireita">
-                    <div id="divdircima">
-                        <h2>{{ item.nome }}</h2><br><br><br>
-                        <p>{{ item.email }}</p>
-                        {% if item.permisao == 1 %}
-                        <p>administrador</p>
-                        {% endif %}
-                        {% if item.permisao == 0 %}
-                        <p>usuário</p>
-                        {% endif %}
-                    </div><br><br>
-                    <div id="divdirbaixo">
-                        <button id="botaev">Histórico de ações</button>
-                        <button id="botaev">Editar</button>
+    <div class="caixa-fade">
+        <div id="elemento">
+            <div id="Adicionar-item">
+                <h3 id="titulo">Remover</h3>
+                <br>
+                <form class="row g-3" action="/remover" method="POST" enctype="multipart/form-data">
+                    <select class="form-select" name="item_selecionado" aria-label="Default select example">
+                        <option value="" selected disabled>Escolha o Item</option>  
+                        {% for item in registros %}
+                            <option value="{{ item.id }}">{{ item.user }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="col-12" id="Regiscao">
+                        <button type="submit" class="btn btn-primary">
+                            Deletar
+                        </button>
                     </div>
-                </div>
             </div>
         </div>
-            {% endfor %}
     </div>
+    </form>
 </body>
+
 </html>

@@ -1,0 +1,42 @@
+TCC-k9
+└── src
+    ├── assets/               # Arquivos estáticos
+    │   ├── fonts/            # papyrus.ttf, jokerman.ttf
+    │   └── images/           # imagens em geral
+    │
+    ├── components/           # Componentes globais e reutilizáveis
+    │   └── Button/
+    │       ├── index.ts      # Apenas exporta o botão (ex: export * from './Button')
+    │       ├── Button.tsx    # Código do componente
+    │       └── styles.ts     # Estilos do botão
+    │
+    ├── screens/              # Telas do aplicativo (antigo 'route')
+    │   ├── Login/
+    │   │   ├── index.ts
+    │   │   ├── Login.tsx
+    │   │   ├── Login.test.tsx
+    │   │   └── helper.ts     # Funções específicas desta tela
+    │   └── Abraxas/
+    │       ├── index.ts
+    │       └── Abraxas.tsx
+    │
+    ├── navigation/           # Configuração de rotas e navegação
+    │   ├── index.tsx         # Arquivo principal com o NavigationContainer
+    │   ├── NavigationService.ts 
+    │   └── linking.ts        # Configuração de Deep Linking
+    │
+    ├── services/             # Tudo relacionado a requisições externas e APIs
+    │   ├── api.ts            # Configuração do Axios/Fetch (antigo apiclient)
+    │   ├── endpoints.ts      # Lista de URLs da sua API
+    │   └── user.ts           # Funções que chamam a API de usuário (antigo UserApi)
+    │
+    ├── hooks/                # Hooks customizados do React
+    │   ├── useBackHandler.ts
+    │   ├── useKeyboard.ts
+    │   ├── useUploadImage.ts
+    │
+    └── types/                # Definições globais do TypeScript
+        ├── index.ts          # Arquivo para centralizar exports, se necessário
+        ├── user.d.ts         # UserInterface
+        ├── media.d.ts        # MediaInterface
+        └── config.d.ts       # AppConfigInterface

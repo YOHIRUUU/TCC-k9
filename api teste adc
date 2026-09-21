@@ -1,0 +1,66 @@
+from flask import blueprint, request, session, jsonify 
+from app import get_db
+
+api_adicionar = blueprint('api_adicionar', __name__)
+
+@api_adicionar.route('/api/adicionar', methods=['POST'])
+def api_adicionar():
+
+    if 'logado' not in session:
+        return jsonify({
+            "erro": "Usuário não está logado"
+        }), 401
+
+    if session.get('validade') == 0:
+        return jsonify({
+            "erro": "Usuário banido"
+        }), 403
+
+    if session.get('permisao') != 0:
+        return jsonify({
+            "erro": "Sem permissão para adicionar produtos"
+        }), 403
+
+    dados = request.get_json()
+
+    Nome = dados.get('Nome')
+    Quantidade = dados.get('Quantidade')
+    Preco = dados.get('Preco')
+    Categoria = dados.get('Categoria')
+    Descricao = dados.get('Descricao')
+    Imagem = dados.get('Imagem')
+
+    if not Nome or Quantidade is None or Preco is None:
+        return jsonify({
+            "erro": "Nome, Quantidade e Preco são obrigatórios"
+        }), 400
+
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute("""
+        INSERT INTO estoque
+        (Nome, Quantidade, Preco, Categoria, Descricao, Imagem)
+        VALUES (%s, %s, %s, %s, %s, %s)
+    """, (
+        Nome,
+        Quantidade,
+        Preco,
+        Categoria,
+        Descricao,
+        Imagem
+    ))
+
+    db.commit()
+
+    cursor.close()
+
+    return jsonify({
+        "mensagem": "Produto adicionado com sucesso",
+        "Nome": Nome,
+        "Quantidade": Quantidade,
+        "Preco": Preco,
+        "Categoria": Categoria,
+        "Descricao": Descricao,
+        "Imagem": Imagem
+    }), 201

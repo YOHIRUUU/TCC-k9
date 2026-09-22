@@ -1,10 +1,11 @@
-from flask import blueprint, request, session, jsonify 
+from flask import Blueprint, request, session, jsonify
 from app import get_db
 
-api_adicionar = blueprint('api_adicionar', __name__)
+api_adicionar = Blueprint('api_adicionar', __name__)
+
 
 @api_adicionar.route('/api/adicionar', methods=['POST'])
-def api_adicionar():
+def adicionar_produto():
 
     if 'logado' not in session:
         return jsonify({
@@ -21,7 +22,12 @@ def api_adicionar():
             "erro": "Sem permissão para adicionar produtos"
         }), 403
 
-    dados = request.get_json()
+    dados = request.get_json(silent=True)
+
+    if not dados:
+        return jsonify({
+            "erro": "JSON inválido ou ausente"
+        }), 400
 
     Nome = dados.get('Nome')
     Quantidade = dados.get('Quantidade')
@@ -38,22 +44,31 @@ def api_adicionar():
     db = get_db()
     cursor = db.cursor()
 
-    cursor.execute("""
-        INSERT INTO estoque
-        (Nome, Quantidade, Preco, Categoria, Descricao, Imagem)
-        VALUES (%s, %s, %s, %s, %s, %s)
-    """, (
-        Nome,
-        Quantidade,
-        Preco,
-        Categoria,
-        Descricao,
-        Imagem
-    ))
+    try:
+        cursor.execute("""
+            INSERT INTO estoque
+            (Nome, Quantidade, Preco, Categoria, Descricao, Imagem)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (
+            Nome,
+            Quantidade,
+            Preco,
+            Categoria,
+            Descricao,
+            Imagem
+        ))
 
-    db.commit()
+        db.commit()
 
-    cursor.close()
+    except Exception as e:
+        db.rollback()
+
+        return jsonify({
+            "erro": "Erro ao adicionar produto"
+        }), 500
+
+    finally:
+        cursor.close()
 
     return jsonify({
         "mensagem": "Produto adicionado com sucesso",

@@ -346,7 +346,7 @@ def desbanir():
 
 #---------------------XIS EMI ÉLI---------
 @app.route("/xml/", methods=["GET", "POST"])
-def logar():
+def xmllogar():
     if request.method == "POST":
         mail = request.form.get("mail")
         user = request.form.get("user")
@@ -382,7 +382,7 @@ def logar():
 
 #--------------o mesmo ABRAXAS---------------
 @app.route("/xml/ABRAXAS", methods=["GET", "POST"])
-def ABRAXAS():
+def xmlABRAXAS():
     if 'logado' not in session:
         return redirect("/xml/")
     if session.get('validade') == 0:
@@ -396,7 +396,7 @@ def ABRAXAS():
 
 #--------------o antigo Tithankaras---------------
 @app.route("/xml/cadastrar", methods=["GET", "POST"])
-def cadastrar():
+def xmlcadastrar():
     if 'logado' not in session:
         return redirect("/xml/")
     if session.get('permisao') == 0:
@@ -432,7 +432,7 @@ def cadastrar():
 
 #--------------O mesmo historico---------------
 @app.route("/xml/historico")
-def historico():
+def xmlhistorico():
     if 'logado' not in session:
         return redirect("/xml/")
     if session.get('validade') == 0:
@@ -447,7 +447,7 @@ def historico():
 
 #---------antigo Bodhisattvas------------
 @app.route("/xml/adicionar", methods=["GET", "POST"])
-def adicionar():
+def xmladicionar():
     if 'logado' not in session:
         return redirect("/xml/")
     if session.get('permisao') == 0:
@@ -483,7 +483,7 @@ def adicionar():
 
 #--------------o antigo anubis---------------
 @app.route("/xml/movimentação", methods=["GET", "POST"])
-def movimento():
+def xmlmovimento():
     if 'logado' not in session:
         return redirect("/api")
     if session.get('validade') == 0:
@@ -523,7 +523,7 @@ def movimento():
 
 #--------------o antigo anu---------------
 @app.route("/xml/remover", methods=["GET", "POST"])
-def remover():
+def xmlremover():
     if 'logado' not in session:
         return redirect("/xml/")
     if session.get('permisao') == 0:
@@ -556,7 +556,7 @@ def remover():
     return render_template("remover.xml", registros=registros)
 
 @app.route("/xml/usuarios")
-def users():
+def xmlusers():
     if 'logado' not in session:
         return redirect("/xml/")
     if session.get('permisao') == 0:
@@ -571,7 +571,7 @@ def users():
     return render_template("users.xml", registros=registros)
 
 @app.route("/xml/perfil")
-def perfil():
+def xmlperfil():
     if 'logado' not in session:
         return redirect("/xml/")
     if session.get('validade') == 0:
@@ -589,7 +589,7 @@ def perfil():
     return render_template("perfil.xml", registros=registros, registro=registro)
 
 @app.route("/xml/delete")
-def delete():
+def xmldelete():
     email = session.get('email')
     db = get_db()
     cursor = db.cursor(dictionary=True)
@@ -601,7 +601,7 @@ def delete():
     return redirect("/xml/")
 
 @app.route("/xml/banir", methods=["GET", "POST"])
-def banir():
+def xmlbanir():
     if 'logado' not in session:
         return redirect("/xml/")
     if session.get('permisao') == 0:
@@ -626,7 +626,7 @@ def banir():
     return render_template("banir.xml", registros = registros)
 
 @app.route("/xml/desbanir", methods=["GET", "POST"])
-def desbanir():
+def xmldesbanir():
     if 'logado' not in session:
         return redirect("/xml/")
     if session.get('permisao') == 0:
@@ -650,7 +650,7 @@ def desbanir():
     return render_template("desbanir.xml", registros = registros)
 
 @app.route("/xml/banido")
-def banido():
+def xmlbanido():
     return render_template("banido.xml")
 
 #--------------------------------- FIN DO XIS EMI ÉLI ------------------------------------------------------

@@ -123,3 +123,25 @@ class MainActivity : AppCompatActivity() {
         })
     }
 }
+
+
+
+
+
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<estoque>
+    {% for item in registros %}
+    <item>
+        <id>{{ item.id }}</id>
+        <nome>{{ item.nome }}</nome>
+        <quantidade>{{ item.quantidade }}</quantidade>
+        <preco>{{ item.preco }}</preco>
+        <categoria>{{ item.categoria }}</categoria>
+        <descricao>{{ item.descricao }}</descricao>
+        <imagem>{{ item.imagem }}</imagem>
+    </item>
+    {% endfor %}
+</estoque>

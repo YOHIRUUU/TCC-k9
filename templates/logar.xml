@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?> <login idioma="pt-br">
+<configuracao>
+
+    <charset>UTF-8</charset>
+
+    <titulo>Login</titulo>
+
+    <bootstrap>
+
+        <css>
+            https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css
+        </css>
+
+        <javascript>
+            https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js
+        </javascript>
+
+    </bootstrap>
+
+
+    <fonte>
+
+        <preconnect>
+            https://fonts.googleapis.com
+        </preconnect>
+
+        <preconnect crossorigin="true">
+            https://fonts.gstatic.com
+        </preconnect>
+
+        <arquivo>
+            https://fonts.googleapis.com/css2?family=Noto+Sans+Old+Turkic&display=swap
+        </arquivo>
+
+    </fonte>
+
+
+    <folha-estilo>
+        ../static/style.css
+    </folha-estilo>
+
+    <icone>
+        static/senai.png
+    </icone>
+
+</configuracao>
+
+
+<conteudo>
+
+    <container id="container">
+
+        <container id="container">
+
+            <carrossel id="carrossel">
+
+                <carousel
+                    id="carouselExampleInterval"
+                    classe="carousel slide"
+                    reproducao-automatica="true">
+
+
+                    <imagem
+                        src="../static/robotista.jpg"
+                        classe="d-block w-100"
+                        ativa="true"
+                        intervalo="2000" />
+
+
+                    <imagem
+                        src="../static/eletronica2.jpg"
+                        classe="d-block w-100"
+                        ativa="false"
+                        intervalo="2000" />
+
+
+                    <imagem
+                        src="../static/cursos-tecnicos.jpg"
+                        classe="d-block w-100"
+                        ativa="false"
+                        intervalo="2000" />
+
+                </carousel>
+
+            </carrossel>
+
+
+            <corpo id="corpo">
+
+                <formulario
+                    id="login-box"
+                    method="POST">
+
+
+                    <logo
+                        src="../static/senai2.png"
+                        id="logo" />
+
+
+                    <espaco quantidade="3" />
+
+
+                    <campo classe="mb-3">
+
+                        <label>
+                            Usuário:
+                        </label>
+
+                        <input
+                            type="text"
+                            name="user"
+                            classe="form-control"
+                            placeholder="Digite seu Nome"
+                            obrigatorio="true" />
+
+                    </campo>
+
+
+                    <campo classe="mb-3">
+
+                        <label>
+                            E-mail:
+                        </label>
+
+                        <input
+                            type="email"
+                            name="mail"
+                            classe="form-control"
+                            placeholder="Digite seu E-mail"
+                            obrigatorio="true" />
+
+                    </campo>
+
+
+                    <campo classe="mb-3">
+
+                        <label>
+                            Senha:
+                        </label>
+
+                        <input
+                            type="password"
+                            name="senha"
+                            classe="form-control"
+                            placeholder="Digite sua Senha"
+                            obrigatorio="true" />
+
+                    </campo>
+
+
+                    <espaco quantidade="1" />
+
+
+                    <botao
+                        type="submit"
+                        classe="btn btn-primary w-100 mb-2"
+                        id="botao_acao">
+
+                        Entrar
+
+                    </botao>
+                </form>
+            </corpo>
+        </container>
+    </container>
+</conteudo>
+</login>

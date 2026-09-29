@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?> <historico idioma="pt-br">
+<configuracao>
+
+    <charset>UTF-8</charset>
+
+    <viewport
+        largura="device-width"
+        escala-inicial="1.0" />
+
+    <titulo>Histórico</titulo>
+
+    <bootstrap>
+        <css>
+            https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css
+        </css>
+
+        <javascript>
+            https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js
+        </javascript>
+    </bootstrap>
+
+    <sweetalert>
+        <css>
+            https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.min.css
+        </css>
+
+        <javascript>
+            https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.all.min.js
+        </javascript>
+    </sweetalert>
+
+    <folha-estilo>
+        ../static/style4.css
+    </folha-estilo>
+
+    <icone>
+        static/senai.png
+    </icone>
+
+</configuracao>
+
+
+<navbar
+    id="navbar"
+    classe="navbar navbar-expand-lg navbar-custom fixed-top">
+
+    <logo href="/" id="logo">
+        ../static/senai2.png
+    </logo>
+
+    <titulo id="tituloEstoque">
+        Almoxarifado
+    </titulo>
+
+
+    <menu>
+
+        {% if session.get('permisao') == 1 %}
+
+        <item href="/adicionar">
+            Adicionar
+        </item>
+
+        {% endif %}
+
+
+        <item href="/movimentação">
+            Movimentação
+        </item>
+
+
+        {% if session.get('permisao') == 1 %}
+
+        <item href="/remover">
+            Remover
+        </item>
+
+        {% endif %}
+
+
+        <item href="/ABRAXAS">
+            Estoque
+        </item>
+
+
+        <configuracoes>
+
+            <icone>
+                ../static/manage.png
+            </icone>
+
+
+            <item href="/perfil">
+                Perfil
+            </item>
+
+
+            {% if session.get('permisao') == 1 %}
+
+            <item href="/usuarios">
+                Usuários
+            </item>
+
+            <item href="/banir">
+                Banir
+            </item>
+
+            <item href="/desbanir">
+                Desbanir
+            </item>
+
+            <item href="/cadastrar">
+                Cadastrar
+            </item>
+
+            {% endif %}
+
+
+            <item href="/logout">
+                Sair do Sistema
+            </item>
+
+            <item href="/deletar">
+                Deletar conta
+            </item>
+
+        </configuracoes>
+
+    </menu>
+
+</navbar>
+
+
+<conteudo>
+
+    <tabela id="tabela">
+
+        <titulo id="titulo">
+            Histórico de Movimentações Recentes
+        </titulo>
+
+
+        <cabecalho>
+
+            <coluna>
+                ID Log
+            </coluna>
+
+            <coluna>
+                Ação
+            </coluna>
+
+            <coluna>
+                Produto
+            </coluna>
+
+            <coluna>
+                Antes
+            </coluna>
+
+            <coluna>
+                Depois
+            </coluna>
+
+            <coluna>
+                Data e Hora
+            </coluna>
+
+            <coluna>
+                Usuário
+            </coluna>
+
+        </cabecalho>
+
+
+        <registros>
+
+            {% for item in registros %}
+
+            <registro>
+
+                <id_log>
+                    {{ item.id_log }}
+                </id_log>
+
+
+                <acao>
+
+                    <texto>
+                        {{ item.acao }}
+                    </texto>
+
+
+                    <classe>
+
+                        {% if 'Entrada' in item.acao %}
+                            bg-success
+
+                        {% elif 'Novo' in item.acao %}
+                            bg-primary
+
+                        {% elif 'Saída' in item.acao %}
+                            bg-warning
+
+                        {% elif 'Deletado' in item.acao %}
+                            bg-danger
+
+                        {% else %}
+                            bg-secondary
+
+                        {% endif %}
+
+                    </classe>
+
+                </acao>
+
+
+                <produto>
+                    {{ item.produto_nome }}
+                </produto>
+
+
+                <quantidade_anterior>
+                    {{ item.qtd_anterior }}
+                    un.
+                </quantidade_anterior>
+
+
+                <quantidade_nova>
+                    {{ item.qtd_nova }}
+                    un.
+                </quantidade_nova>
+
+
+                <data_hora>
+                    {{ item.data_hora }}
+                </data_hora>
+
+
+                <usuario>
+                    {{ item.email }}
+                </usuario>
+
+            </registro>
+
+
+            {% else %}
+
+            <sem-registros>
+
+                <mensagem>
+                    Nenhuma movimentação registrada ainda.
+                </mensagem>
+
+            </sem-registros>
+
+            {% endfor %}
+
+        </registros>
+
+    </tabela>
+
+</conteudo>
+
+</historico>

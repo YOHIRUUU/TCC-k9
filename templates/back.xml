@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?> <login idioma="pt-BR">
+<configuracao>
+    <titulo>Login</titulo>
+
+    <folha-estilo>
+        ../static/style.css
+    </folha-estilo>
+
+    <icone>
+        ../static/senai.png
+    </icone>
+</configuracao>
+
+<conteudo>
+
+    <texto>
+        hehe
+    </texto>
+
+    <imagem
+        src="../static/Imagem.png"
+        id="backrooms"
+        classe="img-fluid"
+        alt="Imagem de fundo" />
+
+</conteudo>
+
+</login>

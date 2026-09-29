@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?> <desbanir idioma="en">
+<configuracao>
+
+    <charset>UTF-8</charset>
+
+    <viewport
+        largura="device-width"
+        escala-inicial="1.0" />
+
+    <titulo>
+        Remover Item
+    </titulo>
+
+    <bootstrap>
+
+        <css>
+            https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css
+        </css>
+
+        <javascript
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous">
+            https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js
+        </javascript>
+
+    </bootstrap>
+
+    <folha-estilo>
+        ../static/style4.css
+    </folha-estilo>
+
+    <icone>
+        static/senai.png
+    </icone>
+
+</configuracao>
+
+
+<navbar
+    id="navbar"
+    classe="navbar navbar-expand-lg navbar-custom fixed-top">
+
+    <logo
+        href="/"
+        id="logo">
+
+        ../static/senai2.png
+
+    </logo>
+
+
+    <titulo
+        id="tituloEstoque">
+
+        Almoxarifado
+
+    </titulo>
+
+
+    <menu>
+
+        <item href="/cadastrar">
+            Cadastrar
+        </item>
+
+        <item href="/banir">
+            Banir
+        </item>
+
+        <item href="/perfil">
+            Perfil
+        </item>
+
+        <item href="/usuarios">
+            Usuários
+        </item>
+
+        <item href="/logout">
+            Logout
+        </item>
+
+        <item href="/delete">
+            Deletar conta
+        </item>
+
+
+        <configuracoes>
+
+            <icone>
+                ../static/usericon.png
+            </icone>
+
+
+            <item href="/ABRAXAS">
+                Estoque
+            </item>
+
+            <item href="/adicionar">
+                Adicionar
+            </item>
+
+            <item href="/remover">
+                Remover
+            </item>
+
+            <item href="movimentação">
+                Movimentar
+            </item>
+
+            <item href="/historico">
+                Histórico
+            </item>
+
+        </configuracoes>
+
+    </menu>
+
+</navbar>
+
+
+<conteudo>
+
+    <formulario
+        action="/desbanir"
+        method="POST"
+        enctype="multipart/form-data">
+
+        <titulo id="titulo">
+            Desbanir
+        </titulo>
+
+
+        <selecao
+            classe="form-select"
+            name="email_selecionado"
+            aria-label="Default select example">
+
+            <opcao
+                valor=""
+                selecionada="true"
+                desabilitada="true">
+
+                Escolha o Item
+
+            </opcao>
+
+
+            {% for item in registros %}
+
+            <opcao
+                valor="{{ item.email }}">
+
+                {{ item.email }}
+
+            </opcao>
+
+            {% endfor %}
+
+        </selecao>
+
+
+        <acao id="Regiscao">
+
+            <botao
+                type="submit"
+                classe="btn btn-danger">
+
+                Desbanir
+
+            </botao>
+
+        </acao>
+
+    </formulario>
+
+</conteudo>
+
+</desbanir>

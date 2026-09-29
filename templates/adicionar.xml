@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?> <adicionar-item>
+<navbar id="navbar">
+
+    <logo href="/">
+        ../static/senai2.png
+    </logo>
+
+    <titulo>Almoxarifado</titulo>
+
+    <menu>
+
+        <item href="/movimentação">
+            Movimentação
+        </item>
+
+        <item href="/remover">
+            Remover
+        </item>
+
+        <item href="/historico">
+            Historico
+        </item>
+
+        <item href="/ABRAXAS">
+            Estoque
+        </item>
+
+        <configuracoes>
+
+            <item href="/perfil">
+                Perfil
+            </item>
+
+            {% if session.get('permisao') == 1 %}
+
+            <item href="/usuarios">
+                Usuários
+            </item>
+
+            <item href="/banir">
+                Banir
+            </item>
+
+            <item href="/desbanir">
+                Desbanir
+            </item>
+
+            <item href="/cadastrar">
+                Cadastrar
+            </item>
+
+            {% endif %}
+
+            <item href="/logout">
+                Sair do Sistema
+            </item>
+
+            <item href="/deletar">
+                Deletar conta
+            </item>
+
+        </configuracoes>
+
+    </menu>
+
+</navbar>
+
+
+<conteudo>
+
+    <formulario
+        action="/adicionar"
+        method="POST"
+        enctype="multipart/form-data">
+
+        <titulo>
+            Adicionar novo Item
+        </titulo>
+
+
+        <campo>
+            <label>Nome</label>
+            <input
+                type="text"
+                name="Nome"
+                id="inputNome" />
+        </campo>
+
+
+        <campo>
+            <label>Quantidade</label>
+            <input
+                type="number"
+                name="Quantidade"
+                min="0"
+                id="inputQuantidade" />
+        </campo>
+
+
+        <campo>
+            <label>Preço</label>
+            <input
+                type="text"
+                name="Preco"
+                id="inputPreco" />
+        </campo>
+
+
+        <campo>
+            <label>Categoria</label>
+            <input
+                type="text"
+                name="Categoria"
+                id="inputCategoria" />
+        </campo>
+
+
+        <campo>
+            <label>Descrição</label>
+            <input
+                type="text"
+                name="Descricao"
+                id="inputDescricao" />
+        </campo>
+
+
+        <campo>
+            <label>Imagem</label>
+            <input
+                type="text"
+                name="Imagem"
+                id="inputImagem" />
+        </campo>
+
+
+        <acao>
+            <botao
+                type="submit">
+                Registrar Novo Item
+            </botao>
+        </acao>
+
+    </formulario>
+
+</conteudo>
+
+</adicionar-item>

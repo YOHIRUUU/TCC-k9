@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<estoque>
+    <navbar id="navbar" class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <logo href="/">
+            ../static/senai2.png
+        </logo>
+
+        <titulo>Almoxarifado</titulo>
+
+        <menu>
+            {% if session.get('permisao') == 1 %}
+            <item href="/adicionar">Adicionar</item>
+            {% endif %}
+
+            <item href="/movimentação">Movimentação</item>
+
+            {% if session.get('permisao') == 1 %}
+            <item href="/remover">Remover</item>
+            {% endif %}
+
+            <item href="/historico">Historico</item>
+
+            <configuracoes>
+                <item href="/perfil">Perfil</item>
+
+                {% if session.get('permisao') == 1 %}
+                <item href="/usuarios">Usuários</item>
+                <item href="/banir">Banir</item>
+                <item href="/desbanir">Desbanir</item>
+                <item href="/cadastrar">Cadastrar</item>
+                {% endif %}
+
+                <item href="/logout">Sair do Sistema</item>
+                <item href="/deletar">Deletar conta</item>
+            </configuracoes>
+        </menu>
+    </navbar>
+
+    <conteudo>
+        <titulo>Estoque</titulo>
+
+        <tabela id="tabela">
+            <cabecalho>
+                <coluna>ID</coluna>
+                <coluna>Nome</coluna>
+                <coluna>Quantidade</coluna>
+                <coluna>Preco</coluna>
+                <coluna>Categoria</coluna>
+                <coluna>Descrição</coluna>
+                <coluna>Imagem</coluna>
+            </cabecalho>
+
+            <produtos>
+                {% for item in registros %}
+                <produto>
+                    <id>{{ item.id }}</id>
+                    <nome>{{ item.nome }}</nome>
+                    <quantidade>{{ item.quantidade }}</quantidade>
+                    <preco>{{ item.preco }}</preco>
+                    <categoria>{{ item.categoria }}</categoria>
+                    <descricao>{{ item.descricao }}</descricao>
+
+                    <imagem>
+                        <url>{{ item.imagem }}</url>
+                        <acao>mostrar_foto</acao>
+                    </imagem>
+                </produto>
+                {% endfor %}
+            </produtos>
+        </tabela>
+    </conteudo>
+</estoque>

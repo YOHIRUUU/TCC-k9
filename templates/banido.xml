@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?> <banido idioma="en">
+<configuracao>
+    <charset>UTF-8</charset>
+    <viewport largura="device-width" escala-inicial="1.0" />
+    <titulo>BANIDO</titulo>
+
+    <folha-estilo>
+        ../static/style2LOST.css
+    </folha-estilo>
+</configuracao>
+
+<conteudo>
+
+    <div id="banido">
+        <texto>BANIDO</texto>
+    </div>
+
+</conteudo>
+
+</banido>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?> <remover-item idioma="en">
+<configuracao>
+
+    <charset>UTF-8</charset>
+
+    <viewport
+        largura="device-width"
+        escala-inicial="1.0" />
+
+    <titulo>
+        Remover Item
+    </titulo>
+
+    <bootstrap>
+
+        <css>
+            https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css
+        </css>
+
+        <javascript
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous">
+
+            https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js
+
+        </javascript>
+
+    </bootstrap>
+
+    <folha-estilo>
+        ../static/style4.css
+    </folha-estilo>
+
+    <icone>
+        static/senai.png
+    </icone>
+
+</configuracao>
+
+
+<navbar
+    id="navbar"
+    classe="navbar navbar-expand-lg navbar-custom fixed-top">
+
+    <logo
+        href="/"
+        id="logo">
+
+        ../static/senai2.png
+
+    </logo>
+
+
+    <titulo id="tituloEstoque">
+        Almoxarifado
+    </titulo>
+
+
+    <menu>
+
+        <item href="/adicionar">
+            Adicionar
+        </item>
+
+        <item href="/movimentação">
+            Movimentação
+        </item>
+
+        <item href="/historico">
+            Historico
+        </item>
+
+        <item href="/ABRAXAS">
+            Estoque
+        </item>
+
+
+        <configuracoes>
+
+            <icone>
+                ../static/manage.png
+            </icone>
+
+
+            <item href="/perfil">
+                Perfil
+            </item>
+
+
+            {% if session.get('permisao') == 1 %}
+
+            <item href="/usuarios">
+                Usuários
+            </item>
+
+            <item href="/banir">
+                Banir
+            </item>
+
+            <item href="/desbanir">
+                Desbanir
+            </item>
+
+            <item href="/cadastrar">
+                Cadastrar
+            </item>
+
+            {% endif %}
+
+
+            <item href="/logout">
+                Sair do Sistema
+            </item>
+
+            <item href="/deletar">
+                Deletar conta
+            </item>
+
+        </configuracoes>
+
+    </menu>
+
+</navbar>
+
+
+<conteudo>
+
+    <formulario
+        action="/remover"
+        method="POST"
+        enctype="multipart/form-data">
+
+        <titulo id="titulo">
+            Remover
+        </titulo>
+
+
+        <selecao
+            classe="form-select"
+            name="item_selecionado"
+            aria-label="Default select example">
+
+            <opcao
+                valor=""
+                selecionada="true"
+                desabilitada="true">
+
+                Escolha o Item
+
+            </opcao>
+
+
+            {% for item in registros %}
+
+            <opcao
+                valor="{{ item.id }}">
+
+                {{ item.nome }}
+
+            </opcao>
+
+            {% endfor %}
+
+        </selecao>
+
+
+        <acao id="Regiscao">
+
+            <botao
+                type="submit"
+                classe="btn btn-primary">
+
+                Deletar
+
+            </botao>
+
+        </acao>
+
+    </formulario>
+
+</conteudo>
+
+</remover-item>

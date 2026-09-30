@@ -1,95 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Remover Item</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../static/style4.css">
-    <link rel="icon" type="image/png" href="static/senai.png">
-
-</head>
-
-<body>
-    <nav id="navbar" class="navbar navbar-expand-lg navbar-custom fixed-top">
-        <li class="nav-item">
-            <a class="nav-link" href="/"><img src="../static/senai2.png" id="logo"></a>
-        </li>
-        <div class="container-fluid">
-            <a class="navbar-brand ms-2 fw-bold" href="" id="tituloEstoque">Almoxarifado</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Cadastrar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/banir">Banir</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/perfil">Perfil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/usuarios">Usuários</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/delete">Deletar conta</a>
-                    </li>
-                    <div class="btn-group">
-                        <button type="button" id="dropdown" class="btn btn-outline-warning dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-                            <img src="../static/usericon.png" id="imagemmenu">
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-lg-end">
-                            <a href="/ABRAXAS">
-                                <li><button class="dropdown-item" type="button">Estoque</button></li>
-                            </a>
-                            <a href="/adicionar">
-                            <li><button class="dropdown-item" type="button">Adicionar</button></li>
-                            </a>
-                            <a href="/remover">
-                            <li><button class="dropdown-item" type="button">Remover</button></li>
-                            </a>
-                            <a href="movimentação">
-                            <li><button class="dropdown-item" type="button">Movimentar</button></li>
-                            </a>
-                            <a href="/historico">
-                            <li><button class="dropdown-item" type="button">Histórico</button></li>
-                            </a>
-                        </ul>
-                    </div>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="caixa-fade">
-        <div id="elemento">
-            <div id="Adicionar-item">
-                <h3 id="titulo">Desbanir</h3>
-                <br>
-                <form class="row g-3" action="/desbanir" method="POST" enctype="multipart/form-data">
-                    <select class="form-select" name="email_selecionado" aria-label="Default select example">
-                        <option value="" selected disabled>Escolha o Item</option>  
-                        {% for item in registros %}
-                            <option value="{{ item.email }}">{{ item.email }}</option>
-                        {% endfor %}
-                    </select>
-                    <div class="col-12" id="Regiscao">
-                        <button type="submit" class="btn btn-danger">
-                            Desbanir
-                        </button>
-                    </div>
-            </div>
-        </div>
-    </div>
-    </form>
-</body>
-</html>
+<?xml version="1.0" encoding="UTF-8"?> <desbanir idioma="en">
+<root>
+    <conteudo>
+        <formulario
+            action="/desbanir"
+            method="POST"
+            enctype="multipart/form-data">
+            <titulo id="titulo">
+                Desbanir
+            </titulo>
+            <selecao
+                classe="form-select"
+                name="email_selecionado"
+                aria-label="Default select example">
+                <opcao
+                    valor=""
+                    selecionada="true"
+                    desabilitada="true">
+                    Escolha o Item
+                </opcao>
+                {% for item in registros %}
+                <opcao
+                    valor="{{ item.email }}">
+                    {{ item.email }}
+                </opcao>
+                {% endfor %}
+            </selecao>
+            <acao id="Regiscao">
+                <botao
+                    type="submit"
+                    classe="btn btn-danger">
+                    Desbanir
+                </botao>
+            </acao>
+        </formulario>
+    </conteudo>
+    </desbanir>
+</root>

@@ -1,313 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?> <usuarios idioma="en">
-<configuracao>
-
-    <charset>UTF-8</charset>
-
-    <viewport
-        largura="device-width"
-        escala-inicial="1.0" />
-
-    <titulo>Usuários</titulo>
-
-    <bootstrap>
-
-        <css>
-            https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css
-        </css>
-
-        <javascript
-            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-            crossorigin="anonymous">
-
-            https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js
-
-        </javascript>
-
-    </bootstrap>
-
-    <sweetalert>
-
-        <css>
-            https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.min.css
-        </css>
-
-        <javascript>
-            https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.all.min.js
-        </javascript>
-
-    </sweetalert>
-
-    <folha-estilo>
-        ../static/style4.css
-    </folha-estilo>
-
-    <icone>
-        static/senai.png
-    </icone>
-
-</configuracao>
-
-
-<navbar
-    id="navbar"
-    classe="navbar navbar-expand-lg navbar-custom fixed-top">
-
-    <logo
-        href="/"
-        id="logo">
-
-        ../static/senai2.png
-
-    </logo>
-
-
-    <titulo id="tituloEstoque">
-        Almoxarifado
-    </titulo>
-
-
-    <menu>
-
-        {% if session.get('permisao') == 1 %}
-
-        <item href="/cadastrar">
-            Cadastrar
-        </item>
-
-        <item href="/banir">
-            Banir
-        </item>
-
-        <item href="/desbanir">
-            Desbanir
-        </item>
-
-        <item href="/usuarios">
-            Usuários
-        </item>
-
-        {% endif %}
-
-
-        <configuracoes>
-
-            <icone>
-                ../static/usericon.png
-            </icone>
-
-
-            <item href="/ABRAXAS">
-                Estoque
-            </item>
-
-
-            {% if session.get('permisao') == 1 %}
-
-            <item href="/adicionar">
-                Adicionar
-            </item>
-
-            <item href="/remover">
-                Remover
-            </item>
-
-            {% endif %}
-
-
-            <item href="movimentação">
-                Movimentar
-            </item>
-
-            <item href="/historico">
-                Histórico
-            </item>
-
-        </configuracoes>
-
-    </menu>
-
-</navbar>
-
-
-<perfil id="flex">
-
-    <cartao id="cardfx">
-
-        <foto id="divesquerda">
-
-            <imagem
-                src="../static/userimagem.png"
-                id="fotouser"
-                alt="foto do user" />
-
-        </foto>
-
-
-        <informacoes id="divdireita">
-
-            <cabecalho id="divdircima">
-
-                {% for item in registro %}
-
-                <nome>
-                    {{ item.nome }}
-                </nome>
-
-
-                <email>
-                    {{ item.email }}
-                </email>
-
-                {% if item.permisao == 1 %}
-                <permissao>
-                    administrador
-                </permissao>
-                {% endif %}
-                {% if item.permisao == 0 %}
-                <permissao>
-                    usuário
-                </permissao>
-                {% endif %}
-                {% endfor %}
-
-            </cabecalho>
-
-
-            <acoes id="divdirbaixo">
-
-                <botao id="botaev2">
-                    <link href="/logout">
-
-                        <imagem
-                            src="../static/account_circle.png" />
-
-                    </link>
-                </botao>
-                <botao id="botaev2">
-
-                    <link href="/banido">
-                        Deletar Conta
-                    </link>
-                </botao>
-            </acoes>
-
-        </informacoes>
-
-    </cartao>
-
-</perfil>
-
-
-<movimentacoes id="elemento">
-
-    <cartao id="card">
-
-        <titulo id="titulo">
-            Suas Movimentações
-        </titulo>
-
-
-        <tabela id="tabela">
-
-            <cabecalho>
-                <coluna>
-                    ID Log
-                </coluna>
-                <coluna>
-                    Ação
-                </coluna>
-                <coluna>
-                    Produto
-                </coluna>
-                <coluna>
-                    Antes
-                </coluna>
-                <coluna>
-                    Depois
-                </coluna>
-                <coluna>
-                    Data e Hora
-                </coluna>
-            </cabecalho>
-
-
-            <registros>
-
-                {% for item in registros %}
-
-                <registro>
-
-                    <id_log>
-                        {{ item.id_log }}
-                    </id_log>
-
-
-                    <acao>
-
-                        <texto>
-                            {{ item.acao }}
-                        </texto>
-
-
-                        <classe>
-
-                            {% if 'Entrada' in item.acao %}
-                                bg-success
-
-                            {% elif 'Novo' in item.acao %}
-                                bg-primary
-
-                            {% elif 'Saída' in item.acao %}
-                                bg-warning
-
-                            {% elif 'Deletado' in item.acao %}
-                                bg-danger
-
-                            {% else %}
-                                bg-secondary
-
-                            {% endif %}
-
-                        </classe>
-
-                    </acao>
-
-
-                    <produto>
-                        {{ item.produto_nome }}
-                    </produto>
-                    <quantidade_anterior>
-                        {{ item.qtd_anterior }}
-                        un.
-                    </quantidade_anterior>
-                    <quantidade_nova>
-                        {{ item.qtd_nova }}
-                        un.
-                    </quantidade_nova>
-                    <data_hora>
-                        {{ item.data_hora }}
-                    </data_hora>
-                </registro>
-
-
-                {% else %}
-
-                <sem-registros>
-
-                    <mensagem>
-                        Nenhuma movimentação registrada ainda.
-                    </mensagem>
-
-                </sem-registros>
-
-                {% endfor %}
-
-            </registros>
-
-        </tabela>
-
-    </cartao>
-
-</movimentacoes>
-
-</usuarios>
+<root>
+    <perfil id="flex">
+        <cartao id="cardfx">
+            <foto id="divesquerda">
+                <imagem
+                    src="../static/userimagem.png"
+                    id="fotouser"
+                    alt="foto do user" />
+            </foto>
+            <informacoes id="divdireita">
+                <cabecalho id="divdircima">
+                    {% for item in registro %}
+                    <nome>
+                        {{ item.nome }}
+                    </nome>
+                    <email>
+                        {{ item.email }}
+                    </email>
+                    {% if item.permisao == 1 %}
+                    <permissao>
+                        administrador
+                    </permissao>
+                    {% endif %}
+                    {% if item.permisao == 0 %}
+                    <permissao>
+                        usuário
+                    </permissao>
+                    {% endif %}
+                    {% endfor %}
+                </cabecalho>
+                <acoes id="divdirbaixo">
+                    <botao id="botaev2">
+                        <link href="/logout">
+                            <imagem
+                                src="../static/account_circle.png" />
+                        </link>
+                    </botao>
+                    <botao id="botaev2">
+                        <link href="/banido">
+                            Deletar Conta
+                        </link>
+                    </botao>
+                </acoes>
+            </informacoes>
+        </cartao>
+    </perfil>
+    <movimentacoes id="elemento">
+        <cartao id="card">
+            <tabela id="tabela">
+                <registros>
+                    {% for item in registros %}
+                    <registro>
+                        <id_log>
+                            {{ item.id_log }}
+                        </id_log>
+                        <acao>
+                            <texto>
+                                {{ item.acao }}
+                            </texto>
+                            <classe>
+                                {% if 'Entrada' in item.acao %}
+                                    bg-success
+                                {% elif 'Novo' in item.acao %}
+                                    bg-primary
+                                {% elif 'Saída' in item.acao %}
+                                    bg-warning
+                                {% elif 'Deletado' in item.acao %}
+                                    bg-danger
+                                {% else %}
+                                    bg-secondary
+                                {% endif %}
+                            </classe>
+                        </acao>
+                        <produto>
+                            {{ item.produto_nome }}
+                        </produto>
+                        <quantidade_anterior>
+                            {{ item.qtd_anterior }}
+                            un.
+                        </quantidade_anterior>
+                        <quantidade_nova>
+                            {{ item.qtd_nova }}
+                            un.
+                        </quantidade_nova>
+                        <data_hora>
+                            {{ item.data_hora }}
+                        </data_hora>
+                    </registro>
+                    {% else %}
+                    <sem-registros>
+                        <mensagem>
+                            Nenhuma movimentação registrada ainda.
+                        </mensagem>
+                    </sem-registros>
+                    {% endfor %}
+                </registros>
+            </tabela>
+        </cartao>
+    </movimentacoes>
+    </usuarios>
+</root>

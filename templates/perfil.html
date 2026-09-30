@@ -71,7 +71,9 @@
     <div id="subflex2">
         <div id="cardfx">
             <div id="divesquerda">
-                <img src="../static/userimagem.png" id="fotouser" alt="foto do user">
+                {% for item in registro %}
+                <img src="{{ item.fotoperfil }}" id="fotouser" alt="foto do user">
+                {% endfor %}
             </div>
             <div id="divdireita">
                 <div id="divdircima">

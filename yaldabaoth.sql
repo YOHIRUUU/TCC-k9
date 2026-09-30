@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     senha VARCHAR(255) NOT NULL,
     permisao INT DEFAULT 0,
     validade INT DEFAULT 1,
+    fotoperfil VARCHAR(255) DEFAULT "https://cdn-icons-png.flaticon.com/512/5951/5951752.png",
     PRIMARY KEY (email)
 );
 

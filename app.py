@@ -2,8 +2,7 @@
 from flask import Flask, render_template, g, request, redirect, session, jsonify
 import mysql.connector 
 import bcrypt
-import mysql.connector
-import os
+
 #---------FIM DOS IMPORTS---------
 
 app = Flask(__name__)
@@ -12,28 +11,28 @@ app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 
 #----------SQL------------------
-
-
-conexao = mysql.connector.connect(
-    host=os.getenv("DB_HOST", "mysql"),
-    port=int(os.getenv("DB_PORT", "3306")),
-    database=os.getenv("DB_NAME", "almoxarifado"),
-    user=os.getenv("DB_USER", "root"),
-    password=os.getenv("DB_PASSWORD", "")
-)
-
-DB_CONFIG = {
-    "host": os.getenv("DB_HOST", "mysql"),
-    "port": int(os.getenv("DB_PORT", "3306")),
-    "database": os.getenv("DB_NAME", "almoxarifado"),
-    "user": os.getenv("DB_USER", "root"),
-    "password": os.getenv("DB_PASSWORD", ""),
-}
+DB_HOST = 'localhost'
+DB_USER = 'root'
+DB_PASSWORD = ''
+DB_DATABASE = 'almoxarifado'
 
 def get_db():
-    if "db" not in g:
-        g.db = mysql.connector.connect(**DB_CONFIG)
+    """Abre uma conexão com o banco de dados se já não houver uma ativa na requisição."""
+    if 'db' not in g:
+        g.db = mysql.connector.connect(
+           host=DB_HOST,
+           user=DB_USER,
+           password=DB_PASSWORD,
+           database=DB_DATABASE
+        )
     return g.db
+
+@app.teardown_appcontext
+def close_db(e):
+    """Fecha a conexão com o banco de dados ao final da requisição."""
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
 #--------------FIM DO SQL--------------------
 
 #--------------ROTAS BACANAS---------------

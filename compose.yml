@@ -20,25 +20,24 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-
-mysql:
-  image: mysql:8.4
-  container_name: flask-mysql
-  environment:
-    MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-    MYSQL_DATABASE: almoxarifado
-  volumes:
-    - mysql_data:/var/lib/mysql
-    - ./mysql/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
-  healthcheck:
-    test:
-      - CMD-SHELL
-      - 'mysqladmin ping -h 127.0.0.1 -uroot --silent'
-    interval: 10s
-    timeout: 5s
-    retries: 5
-    start_period: 40s
-  restart: unless-stopped
+  mysql:
+    image: mysql:8.4
+    container_name: flask-mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: almoxarifado
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./yaldabaoth.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - 'mysqladmin ping -h 127.0.0.1 -uroot --silent'
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
 
 volumes:
   mysql_data:

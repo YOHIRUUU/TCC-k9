@@ -2,25 +2,31 @@
 from flask import Flask, render_template, g, request, redirect, session, jsonify
 import mysql.connector 
 import bcrypt
+import os
+import secrets
 
 #---------FIM DOS IMPORTS---------
 
 app = Flask(__name__)
-app.secret_key = "7ae8e5ccbd9e2e5310a579f7ef1c9fc4911ffda504244469c197eb45ca8785ef5afd5e821b189d430877d7f0c2011047"
+# A chave vem do ambiente (SECRET_KEY). Sem ela, gera uma aleatória a cada start
+# (as sessões deixam de valer quando o app reinicia).
+app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
 app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 
 #----------SQL------------------
-DB_HOST = 'localhost'
-DB_USER = 'root'
-DB_PASSWORD = ''
-DB_DATABASE = 'almoxarifado'
+DB_HOST = os.environ.get("DB_HOST", "localhost")
+DB_PORT = int(os.environ.get("DB_PORT", "3306"))
+DB_USER = os.environ.get("DB_USER", "root")
+DB_PASSWORD = os.environ.get("DB_PASSWORD", "")
+DB_DATABASE = os.environ.get("DB_NAME", "almoxarifado")
 
 def get_db():
     """Abre uma conexão com o banco de dados se já não houver uma ativa na requisição."""
     if 'db' not in g:
         g.db = mysql.connector.connect(
            host=DB_HOST,
+           port=DB_PORT,
            user=DB_USER,
            password=DB_PASSWORD,
            database=DB_DATABASE
@@ -396,4 +402,6 @@ def api_estoque():
 #------------FIM DAS ROTAS BACANAS--------------
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=3000, ssl_context=('cert.pem', 'key.pem'))
+    app.run(debug=os.environ.get("FLASK_DEBUG") == "1", host='0.0.0.0', port=3000, ssl_context=( os.environ.get("SSL_CERT", "cert.pem"), os.environ.get("SSL_KEY", "key.pem"),
+        ),
+    )

@@ -7,6 +7,8 @@ import bcrypt
 
 app = Flask(__name__)
 app.secret_key = "7ae8e5ccbd9e2e5310a579f7ef1c9fc4911ffda504244469c197eb45ca8785ef5afd5e821b189d430877d7f0c2011047"
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_HTTPONLY'] = True
 
 #----------SQL------------------
 DB_HOST = 'localhost'
@@ -18,10 +20,10 @@ def get_db():
     """Abre uma conexão com o banco de dados se já não houver uma ativa na requisição."""
     if 'db' not in g:
         g.db = mysql.connector.connect(
-         host=DB_HOST,
-         user=DB_USER,
-         password=DB_PASSWORD,
-         database=DB_DATABASE
+           host=DB_HOST,
+           user=DB_USER,
+           password=DB_PASSWORD,
+           database=DB_DATABASE
         )
     return g.db
 
@@ -34,7 +36,6 @@ def close_db(e):
 #--------------FIM DO SQL--------------------
 
 #--------------ROTAS BACANAS---------------
-#--------------antigo ganesha---------------
 @app.route("/", methods=["GET", "POST"])
 def logar():
     if request.method == "POST":
@@ -70,7 +71,6 @@ def logar():
                 cursor.close()
     return render_template("logar.html")
 
-#--------------o mesmo ABRAXAS---------------
 @app.route("/ABRAXAS", methods=["GET", "POST"])
 def ABRAXAS():
     if 'logado' not in session:
@@ -84,7 +84,6 @@ def ABRAXAS():
     cursor.close()
     return render_template("ABRAXAS.html", registros=registros)
 
-#--------------o antigo Tithankaras---------------
 @app.route("/cadastrar", methods=["GET", "POST"])
 def cadastrar():
     if 'logado' not in session:
@@ -120,7 +119,6 @@ def cadastrar():
                 cursor.close()
     return render_template("cadastrar.html")
 
-#--------------O mesmo historico---------------
 @app.route("/historico")
 def historico():
     if 'logado' not in session:
@@ -135,7 +133,6 @@ def historico():
     cursor.close()
     return render_template("historico.html", registros=registros)
 
-#---------antigo Bodhisattvas------------
 @app.route("/adicionar", methods=["GET", "POST"])
 def adicionar():
     if 'logado' not in session:
@@ -171,7 +168,6 @@ def adicionar():
         cursor.close()
     return render_template("adicionar.html")
 
-#--------------o antigo anubis---------------
 @app.route("/movimentação", methods=["GET", "POST"])
 def movimento():
     if 'logado' not in session:
@@ -211,7 +207,6 @@ def movimento():
     cursor.close()
     return render_template("movimento.html", registros=registros)
 
-#--------------o antigo anu---------------
 @app.route("/remover", methods=["GET", "POST"])
 def remover():
     if 'logado' not in session:
@@ -354,4 +349,4 @@ def back():
 #------------FIM DAS ROTAS BACANAS--------------
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=3000)
+    app.run(debug=True, host='0.0.0.0', port=3000, ssl_context=('cert.pem', 'key.pem'))

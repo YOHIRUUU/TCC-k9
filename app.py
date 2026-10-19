@@ -346,6 +346,53 @@ def banido():
 @app.route("/back")
 def back():
     return render_template("back.html")
+
+@app.route("/api/login", methods=["POST"])
+def api_login():
+    dados = request.get_json(silent=True) or request.form
+    mail = dados.get("mail")
+    user = dados.get("user")
+    senha = dados.get("senha")
+    if not mail or not user or not senha:
+        return jsonify({"sucesso": False, "mensagem": "Preencha todos os campos obrigatórios."}), 400
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    try:
+        buscar_senha = "SELECT senha, permisao, validade FROM usuarios WHERE email = %s AND `nome` = %s"
+        cursor.execute(buscar_senha, (mail, user))
+        usuario = cursor.fetchone()
+        if usuario:
+            if usuario["validade"] == 0:
+                return jsonify({"sucesso": False, "mensagem": "Usuário banido."}), 403
+            hash_banco = usuario["senha"]
+            if isinstance(hash_banco, bytes):
+                hash_str = hash_banco.decode("utf-8")
+            else:
+                hash_str = hash_banco
+                hash_banco = hash_banco.encode("utf-8")
+            partes = hash_str.split("$")
+            if len(partes) >= 3 and partes[2] == "12":
+                if bcrypt.checkpw(senha.encode("utf-8"), hash_banco):
+                    # Sinal positivo para o app
+                    return jsonify({
+                        "sucesso": True, 
+                        "mensagem": "Login bem-sucedido!",
+                        "permisao": usuario['permisao']
+                    }), 200
+        return jsonify({"sucesso": False, "mensagem": "Credenciais inválidas."}), 401
+    except Exception as e:
+        return jsonify({"sucesso": False, "mensagem": str(e)}), 500
+    finally:
+        cursor.close()
+
+@app.route("/api/estoque", methods=["GET"])
+def api_estoque():
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM estoque")
+    registros = cursor.fetchall()
+    cursor.close()
+    return jsonify({"sucesso": True, "registros": registros}), 200
 #------------FIM DAS ROTAS BACANAS--------------
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 #---------IMPORTS DO BALACOBACO?--------
-from flask import Flask, render_template, g, request, redirect, session
+from flask import Flask, render_template, g, request, redirect, session, jsonify
 import mysql.connector 
 import bcrypt
 

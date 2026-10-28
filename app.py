@@ -2,31 +2,25 @@
 from flask import Flask, render_template, g, request, redirect, session, jsonify
 import mysql.connector 
 import bcrypt
-import os
-import secrets
 
 #---------FIM DOS IMPORTS---------
 
 app = Flask(__name__)
-# A chave vem do ambiente (SECRET_KEY). Sem ela, gera uma aleatória a cada start
-# (as sessões deixam de valer quando o app reinicia).
-app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
+app.secret_key = "7ae8e5ccbd9e2e5310a579f7ef1c9fc4911ffda504244469c197eb45ca8785ef5afd5e821b189d430877d7f0c2011047"
 app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 
 #----------SQL------------------
-DB_HOST = os.environ.get("DB_HOST", "localhost")
-DB_PORT = int(os.environ.get("DB_PORT", "3306"))
-DB_USER = os.environ.get("DB_USER", "root")
-DB_PASSWORD = os.environ.get("DB_PASSWORD", "")
-DB_DATABASE = os.environ.get("DB_NAME", "almoxarifado")
+DB_HOST = 'localhost'
+DB_USER = 'flask_user'
+DB_PASSWORD = 'semha123'
+DB_DATABASE = 'almoxarifado'
 
 def get_db():
     """Abre uma conexão com o banco de dados se já não houver uma ativa na requisição."""
     if 'db' not in g:
         g.db = mysql.connector.connect(
            host=DB_HOST,
-           port=DB_PORT,
            user=DB_USER,
            password=DB_PASSWORD,
            database=DB_DATABASE
@@ -353,6 +347,8 @@ def banido():
 def back():
     return render_template("back.html")
 
+api_login_blueprint = None # Apenas mantendo a estrutura normal do seu app
+
 @app.route("/api/login", methods=["POST"])
 def api_login():
     dados = request.get_json(silent=True) or request.form
@@ -399,9 +395,158 @@ def api_estoque():
     registros = cursor.fetchall()
     cursor.close()
     return jsonify({"sucesso": True, "registros": registros}), 200
+
+@app.route("/api/movimentação", methods=["POST"])
+def api_movimentacao():
+    dados = request.get_json(silent=True) or request.form
+    opcao = dados.get('opcao')
+    quant = dados.get('Quantidade')
+    item = dados.get('item_selecionado')
+    id_limpo = int(item) if item and str(item).isdigit() else None
+    quant_limpa = int(quant) if quant and str(quant).isdigit() else 0
+    if not id_limpo or quant_limpa <= 0:
+        return jsonify({"sucesso": False, "mensagem": "Dados inválidos para movimentação."}), 400
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    try:
+        cursor.execute("SELECT quantidade FROM estoque WHERE id = %s", (id_limpo,))
+        resultado_quant = cursor.fetchone()
+        if not resultado_quant:
+            return jsonify({"sucesso": False, "mensagem": "Item não encontrado no estoque."}), 404
+        quant_atual = resultado_quant['quantidade']
+        if opcao == 'add':
+            nova_quant = quant_atual + quant_limpa
+        else:
+            nova_quant = quant_atual - quant_limpa
+            if nova_quant < 0:
+                nova_quant = 0  # Evita quantidade negativa caso deseje
+        cursor.execute("UPDATE estoque SET quantidade = %s WHERE id = %s", (nova_quant, id_limpo))
+        query_historico = """
+        UPDATE historico_estoque
+        SET email = %s
+        WHERE (email IS NULL OR email = '')
+        ORDER BY id_log DESC
+        LIMIT 1;
+        """
+        email_usuario = dados.get('email', 'app_mobile')
+        cursor.execute(query_historico, (email_usuario,))
+        db.commit()
+        return jsonify({"sucesso": True, "mensagem": "Movimentação realizada com sucesso!"}), 200
+    except Exception as e:
+        db.rollback()
+        return jsonify({"sucesso": False, "mensagem": str(e)}), 500
+    finally:
+        cursor.close()
+
+@app.route("/api/adicionar", methods=["POST"])
+def api_adicionar():
+    dados = request.get_json(silent=True) or request.form
+    nome = dados.get("Nome")
+    quantidade = dados.get("Quantidade")
+    preco = dados.get("Preco")
+    categoria = dados.get("Categoria")
+    descricao = dados.get("Descricao")
+    imagem = dados.get("Imagem")
+    if not nome or not quantidade:
+        return jsonify({"sucesso": False, "mensagem": "Preencha os campos obrigatórios."}), 400
+    db = get_db()
+    cursor = db.cursor()
+    try:
+        sql = """
+        INSERT INTO estoque (nome, quantidade, preco, categoria, descricao, imagem)
+        VALUES (%s, %s, %s, %s, %s, %s)
+        """
+        cursor.execute(sql, (nome, quantidade, preco, categoria, descricao, imagem))
+        query_historico = """
+        UPDATE historico_estoque
+        SET email = %s
+        WHERE (email IS NULL OR email = '')
+        ORDER BY id_log DESC
+        LIMIT 1;
+        """
+        email_usuario = dados.get('email', 'app_mobile')
+        cursor.execute(query_historico, (email_usuario,))
+        db.commit()
+        return jsonify({"sucesso": True, "mensagem": "Produto adicionado com sucesso!"}), 200
+    except Exception as e:
+        db.rollback()
+        return jsonify({"sucesso": False, "mensagem": str(e)}), 500
+    finally:
+        cursor.close()
+
+@app.route("/api/remover", methods=["POST"])
+def api_remover():
+    dados = request.get_json(silent=True) or request.form
+    item = dados.get('item_selecionado')
+    id_limpo = int(item) if item and str(item).isdigit() else None
+    if not id_limpo:
+        return jsonify({"sucesso": False, "mensagem": "Item inválido para remoção."}), 400
+    db = get_db()
+    cursor = db.cursor()
+    try:
+        sql = "DELETE FROM estoque WHERE id = %s"
+        cursor.execute(sql, (id_limpo,))
+        query_historico = """
+        UPDATE historico_estoque
+        SET email = %s
+        WHERE (email IS NULL OR email = '')
+        ORDER BY id_log DESC
+        LIMIT 1;
+        """
+        email_usuario = dados.get('email', 'app_mobile')
+        cursor.execute(query_historico, (email_usuario,))
+        db.commit()
+        return jsonify({"sucesso": True, "mensagem": "Item removido com sucesso!"}), 200
+    except Exception as e:
+        db.rollback()
+        return jsonify({"sucesso": False, "mensagem": str(e)}), 500
+    finally:
+        cursor.close()
+
+@app.route("/api/cadastrar", methods=["POST"])
+def api_cadastrar():
+    dados = request.get_json(silent=True) or request.form
+    email = dados.get('mail')
+    user = dados.get('user')
+    senha = dados.get('senha')
+    opcao = dados.get('opcao')
+    permissao = 1 if opcao else 0
+    if not email or not user or not senha:
+        return jsonify({"sucesso": False, "mensagem": "Preencha todos os campos obrigatórios."}), 400
+    db = get_db()
+    cursor = db.cursor()
+    try:
+        salt = bcrypt.gensalt(rounds=12)
+        senha_hash = bcrypt.hashpw(senha.encode('utf-8'), salt)
+        senha_hash_str = senha_hash.decode('utf-8')
+        sql = """
+        INSERT INTO usuarios (email, nome, senha, permisao)
+        VALUES (%s, %s, %s, %s)
+        """
+        cursor.execute(sql, (email, user, senha_hash_str, permissao))
+        db.commit()
+        return jsonify({"sucesso": True, "mensagem": "Usuário cadastrado com sucesso!"}), 200
+    except Exception as e:
+        db.rollback()
+        return jsonify({"sucesso": False, "mensagem": str(e)}), 500
+    finally:
+        cursor.close()
+
+@app.route("/api/historico", methods=["GET"])
+def api_historico():
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    try:
+        query = "SELECT * FROM historico_estoque ORDER BY data_hora DESC LIMIT 15"
+        cursor.execute(query)
+        registros = cursor.fetchall()
+        return jsonify({"sucesso": True, "registros": registros}), 200
+    except Exception as e:
+        return jsonify({"sucesso": False, "mensagem": str(e)}), 500
+    finally:
+        cursor.close()
+
 #------------FIM DAS ROTAS BACANAS--------------
 
 if __name__ == "__main__":
-    app.run(debug=os.environ.get("FLASK_DEBUG") == "1", host='0.0.0.0', port=3000, ssl_context=( os.environ.get("SSL_CERT", "cert.pem"), os.environ.get("SSL_KEY", "key.pem"),
-        ),
-    )
+    app.run(debug=True, host='0.0.0.0', port=3000, ssl_context=('cert.pem', 'key.pem'))

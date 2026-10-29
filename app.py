@@ -12,8 +12,8 @@ app.config['SESSION_COOKIE_HTTPONLY'] = True
 
 #----------SQL------------------
 DB_HOST = 'localhost'
-DB_USER = 'flask_user'
-DB_PASSWORD = 'semha123'
+DB_USER = 'root'
+DB_PASSWORD = ''
 DB_DATABASE = 'almoxarifado'
 
 def get_db():

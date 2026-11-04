@@ -1,5 +1,5 @@
 #!ABRIR DOCKER DESKTOP ANTES!
-# docker compose config
+# docker compose -f caminho/ate/o/compose.yml up -d
 # docker compose up --build -d app
 
 

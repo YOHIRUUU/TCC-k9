@@ -38,7 +38,7 @@ FOR EACH ROW
 BEGIN
     INSERT INTO historico_estoque (acao, produto_nome, qtd_anterior, qtd_nova)
     VALUES ('Novo Produto Cadastrado', NEW.nome, 0, NEW.quantidade);
-END; //
+end; //
 DELIMITER ;
 
 DELIMITER //
@@ -47,7 +47,6 @@ AFTER UPDATE ON estoque
 FOR EACH ROW
 BEGIN
     DECLARE tipo_acao VARCHAR(50);
-    
     IF NEW.quantidade > OLD.quantidade THEN
         SET tipo_acao = 'Adição';
     ELSEIF NEW.quantidade < OLD.quantidade THEN
@@ -55,10 +54,9 @@ BEGIN
     ELSE
         SET tipo_acao = 'Null';
     END IF;
-
     INSERT INTO historico_estoque (acao, produto_nome, qtd_anterior, qtd_nova)
     VALUES (tipo_acao, NEW.nome, OLD.quantidade, NEW.quantidade);
-END; //
+end; //
 DELIMITER ;
 
 DELIMITER //
@@ -68,7 +66,7 @@ FOR EACH ROW
 BEGIN
     INSERT INTO historico_estoque (acao, produto_nome, qtd_anterior, qtd_nova)
     VALUES ('Item Deletado', OLD.nome, OLD.quantidade, 0);
-END; //
+end; //
 DELIMITER ;
 
 INSERT INTO usuarios (email, nome, senha, permisao) VALUES ("adm@adm", "adm", "$2b$12$.tLzF/ISU.kt9yIzmP149uvFwrsUW2KSa9FNt9UzYiFRcFGl0ofMy", 1);

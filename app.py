@@ -347,7 +347,7 @@ def banido():
 def back():
     return render_template("back.html")
 
-api_login_blueprint = None # Apenas mantendo a estrutura normal do seu app
+api_login_blueprint = None
 
 @app.route("/api/login", methods=["POST"])
 def api_login():
@@ -375,9 +375,8 @@ def api_login():
             partes = hash_str.split("$")
             if len(partes) >= 3 and partes[2] == "12":
                 if bcrypt.checkpw(senha.encode("utf-8"), hash_banco):
-                    # Sinal positivo para o app
                     return jsonify({
-                        "sucesso": True, 
+                        "sucesso": True,
                         "mensagem": "Login bem-sucedido!",
                         "permisao": usuario['permisao']
                     }), 200
@@ -402,6 +401,7 @@ def api_movimentacao():
     opcao = dados.get('opcao')
     quant = dados.get('Quantidade')
     item = dados.get('item_selecionado')
+    email_usuario = dados.get('email', 'app_mobile')
     id_limpo = int(item) if item and str(item).isdigit() else None
     quant_limpa = int(quant) if quant and str(quant).isdigit() else 0
     if not id_limpo or quant_limpa <= 0:
@@ -419,7 +419,7 @@ def api_movimentacao():
         else:
             nova_quant = quant_atual - quant_limpa
             if nova_quant < 0:
-                nova_quant = 0  # Evita quantidade negativa caso deseje
+                nova_quant = 0
         cursor.execute("UPDATE estoque SET quantidade = %s WHERE id = %s", (nova_quant, id_limpo))
         query_historico = """
         UPDATE historico_estoque
@@ -428,7 +428,6 @@ def api_movimentacao():
         ORDER BY id_log DESC
         LIMIT 1;
         """
-        email_usuario = dados.get('email', 'app_mobile')
         cursor.execute(query_historico, (email_usuario,))
         db.commit()
         return jsonify({"sucesso": True, "mensagem": "Movimentação realizada com sucesso!"}), 200
@@ -447,6 +446,7 @@ def api_adicionar():
     categoria = dados.get("Categoria")
     descricao = dados.get("Descricao")
     imagem = dados.get("Imagem")
+    email_usuario = dados.get('email', 'app_mobile')
     if not nome or not quantidade:
         return jsonify({"sucesso": False, "mensagem": "Preencha os campos obrigatórios."}), 400
     db = get_db()
@@ -464,7 +464,6 @@ def api_adicionar():
         ORDER BY id_log DESC
         LIMIT 1;
         """
-        email_usuario = dados.get('email', 'app_mobile')
         cursor.execute(query_historico, (email_usuario,))
         db.commit()
         return jsonify({"sucesso": True, "mensagem": "Produto adicionado com sucesso!"}), 200
@@ -478,6 +477,7 @@ def api_adicionar():
 def api_remover():
     dados = request.get_json(silent=True) or request.form
     item = dados.get('item_selecionado')
+    email_usuario = dados.get('email', 'app_mobile')
     id_limpo = int(item) if item and str(item).isdigit() else None
     if not id_limpo:
         return jsonify({"sucesso": False, "mensagem": "Item inválido para remoção."}), 400
@@ -493,7 +493,6 @@ def api_remover():
         ORDER BY id_log DESC
         LIMIT 1;
         """
-        email_usuario = dados.get('email', 'app_mobile')
         cursor.execute(query_historico, (email_usuario,))
         db.commit()
         return jsonify({"sucesso": True, "mensagem": "Item removido com sucesso!"}), 200

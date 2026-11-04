@@ -11,16 +11,18 @@ app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 
 #----------SQL------------------
-DB_HOST = 'localhost'
-DB_USER = 'root'
-DB_PASSWORD = ''
-DB_DATABASE = 'almoxarifado'
+DB_HOST = "mysql"  # <--- Fixado diretamente para o nome do serviço no Docker Compose
+DB_PORT = 3306
+DB_USER = "root"
+DB_PASSWORD = ""
+DB_DATABASE = "almoxarifado"
 
 def get_db():
     """Abre uma conexão com o banco de dados se já não houver uma ativa na requisição."""
     if 'db' not in g:
         g.db = mysql.connector.connect(
            host=DB_HOST,
+           port=DB_PORT,
            user=DB_USER,
            password=DB_PASSWORD,
            database=DB_DATABASE

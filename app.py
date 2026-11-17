@@ -7,8 +7,6 @@ import bcrypt
 
 app = Flask(__name__)
 app.secret_key = "7ae8e5ccbd9e2e5310a579f7ef1c9fc4911ffda504244469c197eb45ca8785ef5afd5e821b189d430877d7f0c2011047"
-app.config['SESSION_COOKIE_SECURE'] = True
-app.config['SESSION_COOKIE_HTTPONLY'] = True
 
 #----------SQL------------------
 #----------SQL------------------

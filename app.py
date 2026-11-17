@@ -1,5 +1,5 @@
 #---------IMPORTS DO BALACOBACO?--------
-from flask import Flask, render_template, g, request, redirect, session, jsonify
+from flask import Flask, render_template, g, request, redirect, session
 import mysql.connector 
 import bcrypt
 
@@ -11,21 +11,20 @@ app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 
 #----------SQL------------------
-DB_HOST = "mysql"  # <--- Fixado diretamente para o nome do serviço no Docker Compose
-DB_PORT = 3306
-DB_USER = "root"
-DB_PASSWORD = ""
-DB_DATABASE = "almoxarifado"
+#----------SQL------------------
+DB_HOST = 'localhost'
+DB_USER = 'root'
+DB_PASSWORD = ''
+DB_DATABASE = 'almoxarifado'
 
 def get_db():
     """Abre uma conexão com o banco de dados se já não houver uma ativa na requisição."""
     if 'db' not in g:
         g.db = mysql.connector.connect(
-           host=DB_HOST,
-           port=DB_PORT,
-           user=DB_USER,
-           password=DB_PASSWORD,
-           database=DB_DATABASE
+         host=DB_HOST,
+         user=DB_USER,
+         password=DB_PASSWORD,
+         database=DB_DATABASE
         )
     return g.db
 
@@ -35,7 +34,6 @@ def close_db(e):
     db = g.pop('db', None)
     if db is not None:
         db.close()
-#--------------FIM DO SQL--------------------
 
 #--------------ROTAS BACANAS---------------
 @app.route("/", methods=["GET", "POST"])
@@ -48,11 +46,11 @@ def logar():
             db = get_db()
             cursor = db.cursor(dictionary=True)
             try:
-                buscar_senha = "SELECT senha, permisao, validade FROM usuarios WHERE email = %s AND `nome` = %s"
+                buscar_senha = "SELECT cpf, permisao, validade FROM usuarios WHERE email = %s AND `nome` = %s"
                 cursor.execute(buscar_senha, (mail, user))
                 usuario = cursor.fetchone()
                 if usuario:
-                    hash_banco = usuario["senha"]
+                    hash_banco = usuario["cpf"]
                     if isinstance(hash_banco, bytes):
                         hash_str = hash_banco.decode("utf-8")
                     else:
@@ -108,7 +106,7 @@ def cadastrar():
             cursor = db.cursor()
             try:
                 sql = """
-                INSERT INTO usuarios (email, nome, senha, permisao)
+                INSERT INTO usuarios (email, nome, cpf, permisao)
                 VALUES (%s, %s, %s, %s)
                 """
                 cursor.execute(sql, (email, user, senha_hash_str, permissao))
@@ -348,205 +346,6 @@ def banido():
 @app.route("/back")
 def back():
     return render_template("back.html")
-
-api_login_blueprint = None
-
-@app.route("/api/login", methods=["POST"])
-def api_login():
-    dados = request.get_json(silent=True) or request.form
-    mail = dados.get("mail")
-    user = dados.get("user")
-    senha = dados.get("senha")
-    if not mail or not user or not senha:
-        return jsonify({"sucesso": False, "mensagem": "Preencha todos os campos obrigatórios."}), 400
-    db = get_db()
-    cursor = db.cursor(dictionary=True)
-    try:
-        buscar_senha = "SELECT senha, permisao, validade FROM usuarios WHERE email = %s AND `nome` = %s"
-        cursor.execute(buscar_senha, (mail, user))
-        usuario = cursor.fetchone()
-        if usuario:
-            if usuario["validade"] == 0:
-                return jsonify({"sucesso": False, "mensagem": "Usuário banido."}), 403
-            hash_banco = usuario["senha"]
-            if isinstance(hash_banco, bytes):
-                hash_str = hash_banco.decode("utf-8")
-            else:
-                hash_str = hash_banco
-                hash_banco = hash_banco.encode("utf-8")
-            partes = hash_str.split("$")
-            if len(partes) >= 3 and partes[2] == "12":
-                if bcrypt.checkpw(senha.encode("utf-8"), hash_banco):
-                    return jsonify({
-                        "sucesso": True,
-                        "mensagem": "Login bem-sucedido!",
-                        "permisao": usuario['permisao']
-                    }), 200
-        return jsonify({"sucesso": False, "mensagem": "Credenciais inválidas."}), 401
-    except Exception as e:
-        return jsonify({"sucesso": False, "mensagem": str(e)}), 500
-    finally:
-        cursor.close()
-
-@app.route("/api/estoque", methods=["GET"])
-def api_estoque():
-    db = get_db()
-    cursor = db.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM estoque")
-    registros = cursor.fetchall()
-    cursor.close()
-    return jsonify({"sucesso": True, "registros": registros}), 200
-
-@app.route("/api/movimentação", methods=["POST"])
-def api_movimentacao():
-    dados = request.get_json(silent=True) or request.form
-    opcao = dados.get('opcao')
-    quant = dados.get('Quantidade')
-    item = dados.get('item_selecionado')
-    email_usuario = dados.get('email', 'app_mobile')
-    id_limpo = int(item) if item and str(item).isdigit() else None
-    quant_limpa = int(quant) if quant and str(quant).isdigit() else 0
-    if not id_limpo or quant_limpa <= 0:
-        return jsonify({"sucesso": False, "mensagem": "Dados inválidos para movimentação."}), 400
-    db = get_db()
-    cursor = db.cursor(dictionary=True)
-    try:
-        cursor.execute("SELECT quantidade FROM estoque WHERE id = %s", (id_limpo,))
-        resultado_quant = cursor.fetchone()
-        if not resultado_quant:
-            return jsonify({"sucesso": False, "mensagem": "Item não encontrado no estoque."}), 404
-        quant_atual = resultado_quant['quantidade']
-        if opcao == 'add':
-            nova_quant = quant_atual + quant_limpa
-        else:
-            nova_quant = quant_atual - quant_limpa
-            if nova_quant < 0:
-                nova_quant = 0
-        cursor.execute("UPDATE estoque SET quantidade = %s WHERE id = %s", (nova_quant, id_limpo))
-        query_historico = """
-        UPDATE historico_estoque
-        SET email = %s
-        WHERE (email IS NULL OR email = '')
-        ORDER BY id_log DESC
-        LIMIT 1;
-        """
-        cursor.execute(query_historico, (email_usuario,))
-        db.commit()
-        return jsonify({"sucesso": True, "mensagem": "Movimentação realizada com sucesso!"}), 200
-    except Exception as e:
-        db.rollback()
-        return jsonify({"sucesso": False, "mensagem": str(e)}), 500
-    finally:
-        cursor.close()
-
-@app.route("/api/adicionar", methods=["POST"])
-def api_adicionar():
-    dados = request.get_json(silent=True) or request.form
-    nome = dados.get("Nome")
-    quantidade = dados.get("Quantidade")
-    preco = dados.get("Preco")
-    categoria = dados.get("Categoria")
-    descricao = dados.get("Descricao")
-    imagem = dados.get("Imagem")
-    email_usuario = dados.get('email', 'app_mobile')
-    if not nome or not quantidade:
-        return jsonify({"sucesso": False, "mensagem": "Preencha os campos obrigatórios."}), 400
-    db = get_db()
-    cursor = db.cursor()
-    try:
-        sql = """
-        INSERT INTO estoque (nome, quantidade, preco, categoria, descricao, imagem)
-        VALUES (%s, %s, %s, %s, %s, %s)
-        """
-        cursor.execute(sql, (nome, quantidade, preco, categoria, descricao, imagem))
-        query_historico = """
-        UPDATE historico_estoque
-        SET email = %s
-        WHERE (email IS NULL OR email = '')
-        ORDER BY id_log DESC
-        LIMIT 1;
-        """
-        cursor.execute(query_historico, (email_usuario,))
-        db.commit()
-        return jsonify({"sucesso": True, "mensagem": "Produto adicionado com sucesso!"}), 200
-    except Exception as e:
-        db.rollback()
-        return jsonify({"sucesso": False, "mensagem": str(e)}), 500
-    finally:
-        cursor.close()
-
-@app.route("/api/remover", methods=["POST"])
-def api_remover():
-    dados = request.get_json(silent=True) or request.form
-    item = dados.get('item_selecionado')
-    email_usuario = dados.get('email', 'app_mobile')
-    id_limpo = int(item) if item and str(item).isdigit() else None
-    if not id_limpo:
-        return jsonify({"sucesso": False, "mensagem": "Item inválido para remoção."}), 400
-    db = get_db()
-    cursor = db.cursor()
-    try:
-        sql = "DELETE FROM estoque WHERE id = %s"
-        cursor.execute(sql, (id_limpo,))
-        query_historico = """
-        UPDATE historico_estoque
-        SET email = %s
-        WHERE (email IS NULL OR email = '')
-        ORDER BY id_log DESC
-        LIMIT 1;
-        """
-        cursor.execute(query_historico, (email_usuario,))
-        db.commit()
-        return jsonify({"sucesso": True, "mensagem": "Item removido com sucesso!"}), 200
-    except Exception as e:
-        db.rollback()
-        return jsonify({"sucesso": False, "mensagem": str(e)}), 500
-    finally:
-        cursor.close()
-
-@app.route("/api/cadastrar", methods=["POST"])
-def api_cadastrar():
-    dados = request.get_json(silent=True) or request.form
-    email = dados.get('mail')
-    user = dados.get('user')
-    senha = dados.get('senha')
-    opcao = dados.get('opcao')
-    permissao = 1 if opcao else 0
-    if not email or not user or not senha:
-        return jsonify({"sucesso": False, "mensagem": "Preencha todos os campos obrigatórios."}), 400
-    db = get_db()
-    cursor = db.cursor()
-    try:
-        salt = bcrypt.gensalt(rounds=12)
-        senha_hash = bcrypt.hashpw(senha.encode('utf-8'), salt)
-        senha_hash_str = senha_hash.decode('utf-8')
-        sql = """
-        INSERT INTO usuarios (email, nome, senha, permisao)
-        VALUES (%s, %s, %s, %s)
-        """
-        cursor.execute(sql, (email, user, senha_hash_str, permissao))
-        db.commit()
-        return jsonify({"sucesso": True, "mensagem": "Usuário cadastrado com sucesso!"}), 200
-    except Exception as e:
-        db.rollback()
-        return jsonify({"sucesso": False, "mensagem": str(e)}), 500
-    finally:
-        cursor.close()
-
-@app.route("/api/historico", methods=["GET"])
-def api_historico():
-    db = get_db()
-    cursor = db.cursor(dictionary=True)
-    try:
-        query = "SELECT * FROM historico_estoque ORDER BY data_hora DESC LIMIT 15"
-        cursor.execute(query)
-        registros = cursor.fetchall()
-        return jsonify({"sucesso": True, "registros": registros}), 200
-    except Exception as e:
-        return jsonify({"sucesso": False, "mensagem": str(e)}), 500
-    finally:
-        cursor.close()
-
 #------------FIM DAS ROTAS BACANAS--------------
 
 if __name__ == "__main__":
